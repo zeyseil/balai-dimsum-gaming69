@@ -1,0 +1,530 @@
+/* Menu Item Modal Styles */
+
+#menu-item-modal {
+    display: none;
+  }
+  
+  #menu-item-modal.hidden {
+    display: none;
+  }
+  
+  #menu-item-modal:not(.hidden) {
+    display: block;
+  }
+  
+  /* Modal Overlay */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+    backdrop-filter: blur(4px);
+  }
+  
+  /* Modal Container */
+  #menu-item-modal .modal-overlay > div {
+    position: relative;
+    width: 100%;
+    max-width: 90vw;
+    height: 90vh;
+    max-height: 900px;
+    background-color: #372727;
+    border-radius: 8px;
+    overflow-y: auto;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+  
+  /* Responsive: Tablet and up */
+  @media (min-width: 768px) {
+    #menu-item-modal .modal-overlay > div {
+      max-width: 800px;
+    }
+  }
+  
+  /* Responsive: Large and up */
+  @media (min-width: 1024px) {
+    #menu-item-modal .modal-overlay > div {
+      max-width: 1000px;
+    }
+  }
+  
+  /* Modal Header */
+  #menu-item-modal .modal-overlay > div > div:first-child {
+    position: relative;
+    height: 250px;
+    background-color: #372727;
+  }
+  
+  @media (min-width: 768px) {
+    #menu-item-modal .modal-overlay > div > div:first-child {
+      height: 350px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    #menu-item-modal .modal-overlay > div > div:first-child {
+      height: 400px;
+    }
+  }
+  
+  /* Close Buttons */
+  .modal-close-back,
+  .modal-close-x {
+    position: absolute;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    padding: 0;
+  }
+  
+  .modal-close-back {
+    top: 1rem;
+    left: 1rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+  }
+  
+  .modal-close-back:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  @media (min-width: 768px) {
+    .modal-close-back {
+      width: 80px;
+      height: 80px;
+    }
+  }
+  
+  .modal-close-x {
+    top: 1rem;
+    right: 1rem;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 12px;
+  }
+  
+  .modal-close-x:hover {
+    background-color: #f3f4f6;
+  }
+  
+  @media (min-width: 768px) {
+    .modal-close-x {
+      width: 60px;
+      height: 60px;
+      padding: 16px;
+    }
+  }
+  
+  /* Modal Item Image */
+  #modal-item-image {
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    border-radius: 9999px;
+  }
+  
+  @media (min-width: 768px) {
+    #modal-item-image {
+      top: -120px;
+      width: 450px;
+      height: 450px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    #modal-item-image {
+      width: 550px;
+      height: 550px;
+    }
+  }
+  
+  /* Modal Content */
+  #menu-item-modal .px-4.md\:px-6.lg\:px-8 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 2rem;
+  }
+  
+  @media (min-width: 768px) {
+    #menu-item-modal .px-4.md\:px-6.lg\:px-8 {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    #menu-item-modal .px-4.md\:px-6.lg\:px-8 {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+  
+  /* Modal Item Name */
+  #modal-item-name {
+    color: white;
+    font-size: 24px;
+    font-weight: normal;
+    margin-bottom: 0.75rem;
+  }
+  
+  @media (min-width: 768px) {
+    #modal-item-name {
+      font-size: 32px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    #modal-item-name {
+      font-size: 40px;
+    }
+  }
+  
+  /* Modal Item Price */
+  #modal-item-price {
+    color: white;
+    font-size: 24px;
+    font-weight: normal;
+    margin-bottom: 1.5rem;
+  }
+  
+  @media (min-width: 768px) {
+    #modal-item-price {
+      font-size: 32px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    #modal-item-price {
+      font-size: 40px;
+    }
+  }
+  
+  /* Size Button Container */
+  .size-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: normal;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    cursor: pointer;
+    border: none;
+  }
+  
+  @media (min-width: 768px) {
+    .size-btn {
+      font-size: 28px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .size-btn {
+      font-size: 36px;
+    }
+  }
+  
+  /* Size Button Active State */
+  .size-btn.active {
+    background-color: #A18B8B;
+    color: white;
+    border: none;
+  }
+  
+  /* Size Button Inactive State */
+  .size-btn:not(.active) {
+    background-color: transparent;
+    color: white;
+    border: 2px solid #A18B8B;
+  }
+  
+  /* Size Button Margin */
+  .modal-overlay > div > div:last-child > div:nth-child(2) {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Notes Section */
+  .modal-overlay > div > div:last-child > div:nth-child(3) {
+    margin-bottom: 1.5rem;
+  }
+  
+  .modal-overlay > div > div:last-child > div:nth-child(3) label {
+    display: block;
+    color: white;
+    font-size: 20px;
+    font-weight: normal;
+    margin-bottom: 0.75rem;
+  }
+  
+  @media (min-width: 768px) {
+    .modal-overlay > div > div:last-child > div:nth-child(3) label {
+      font-size: 28px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .modal-overlay > div > div:last-child > div:nth-child(3) label {
+      font-size: 36px;
+    }
+  }
+  
+  /* Notes Textarea */
+  #modal-notes {
+    width: 100%;
+    height: 120px;
+    background-color: #D9D9D9;
+    border-radius: 8px;
+    padding: 1rem;
+    font-size: 16px;
+    color: black;
+    resize: none;
+    border: none;
+    font-family: 'Jua', sans-serif;
+  }
+  
+  @media (min-width: 768px) {
+    #modal-notes {
+      height: 150px;
+      font-size: 18px;
+    }
+  }
+  
+  #modal-notes:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #dc2626;
+  }
+  
+  /* Tagline Container */
+  .modal-overlay > div > div:last-child > div:nth-child(4) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  .modal-overlay > div > div:last-child > div:nth-child(4) img {
+    width: 40px;
+    height: 35px;
+  }
+  
+  @media (min-width: 768px) {
+    .modal-overlay > div > div:last-child > div:nth-child(4) img {
+      width: 50px;
+      height: 44px;
+    }
+  }
+  
+  .modal-overlay > div > div:last-child > div:nth-child(4) p {
+    color: white;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    flex: 1;
+    margin: 0 0.75rem;
+  }
+  
+  @media (min-width: 768px) {
+    .modal-overlay > div > div:last-child > div:nth-child(4) p {
+      font-size: 20px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .modal-overlay > div > div:last-child > div:nth-child(4) p {
+      font-size: 28px;
+    }
+  }
+  
+  /* Background Section */
+  .modal-background-section {
+    background-color: #2F2020;
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .modal-background-section {
+      padding: 1.5rem;
+    }
+  }
+  
+  /* Quantity Section */
+  .quantity-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  
+  .quantity-label {
+    color: white;
+    font-size: 20px;
+    font-weight: normal;
+  }
+  
+  @media (min-width: 768px) {
+    .quantity-label {
+      font-size: 28px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .quantity-label {
+      font-size: 36px;
+    }
+  }
+  
+  /* Quantity Controls */
+  .quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .quantity-btn-minus,
+  .quantity-btn-plus {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: white;
+  }
+  
+  @media (min-width: 768px) {
+    .quantity-btn-minus,
+    .quantity-btn-plus {
+      width: 50px;
+      height: 50px;
+    }
+  }
+  
+  .quantity-btn-minus:hover,
+  .quantity-btn-plus:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Quantity Display */
+  #modal-quantity {
+    color: white;
+    font-size: 24px;
+    font-weight: normal;
+    min-width: 50px;
+    text-align: center;
+  }
+  
+  @media (min-width: 768px) {
+    #modal-quantity {
+      font-size: 32px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    #modal-quantity {
+      font-size: 40px;
+    }
+  }
+  
+  /* Submit Button */
+  .modal-submit-btn {
+    width: 100%;
+    background-color: #dc2626;
+    color: white;
+    border-radius: 11px;
+    padding: 1rem;
+    font-size: 32px;
+    font-weight: normal;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border: none;
+    font-family: 'Jua', sans-serif;
+  }
+  
+  @media (min-width: 768px) {
+    .modal-submit-btn {
+      padding: 1.5rem 1rem;
+      font-size: 48px;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .modal-submit-btn {
+      font-size: 64px;
+    }
+  }
+  
+  .modal-submit-btn:hover {
+    background-color: #b91c1c;
+  }
+  
+  /* SVG Icons */
+  .modal-overlay svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  
+  .modal-close-back svg {
+    width: 32px;
+    height: 32px;
+    color: white;
+  }
+  
+  @media (min-width: 768px) {
+    .modal-close-back svg {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  
+  .modal-close-x svg {
+    width: 24px;
+    height: 24px;
+    color: black;
+  }
+  
+  @media (min-width: 768px) {
+    .modal-close-x svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
+  
+  .quantity-btn-minus svg,
+  .quantity-btn-plus svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+  }
+  
+  @media (min-width: 768px) {
+    .quantity-btn-minus svg,
+    .quantity-btn-plus svg {
+      width: 32px;
+      height: 32px;
+    }
+  }
