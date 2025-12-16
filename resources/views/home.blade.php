@@ -19,7 +19,6 @@
                 <a href="/menu">Menu</a>
                 <a href="/saran">Saran</a>
                 <a href="/galeri">Galeri</a>
-                <a href="/pesanan">Pesanan</a>
             </nav>
         </div>
 
@@ -36,8 +35,8 @@
             <div class="about-container">
                 <div class="about-image">
                     <div class="about-left">
-    <img src="img/logodimsum.jpg" class="about-logo" alt="Logo">
-</div>
+            <img src="img/logodimsum.jpg" class="about-logo" alt="Logo">
+        </div>
 
                 </div>
                 <div class="about-content">

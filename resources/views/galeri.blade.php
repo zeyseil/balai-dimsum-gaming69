@@ -40,7 +40,19 @@ function autoGrow(element) {
     <!-- GALERI PREVIEW -->
     <section class="gallery-box">
         <h2>Galeri</h2>
-        <img src="./img/display.png" class="gallery-img">
+    
+        <div class="gallery-slider">
+        <div class="gallery-slides" id="gallerySlides">
+            <img src="./img/display.png" alt="">
+            <img src="./img/display2.jpg" alt="">
+            <img src="./img/display3.jpg" alt="">
+            <img src="./img/display4.jpeg" alt="">
+            <img src="./img/display5.jpg" alt="">
+        </div>
+
+        <button class="gallery-nav prev" onclick="prevGallery()">‹</button>
+        <button class="gallery-nav next" onclick="nextGallery()">›</button>
+    </div>
     </section>
 
         <!-- Tagline Section -->
@@ -103,5 +115,49 @@ function autoGrow(element) {
             </div>
         </div>
     </div>
+<!-- script untuk slider -->
+<script>
+let galleryIndex = 0;
+const gallerySlides = document.getElementById('gallerySlides');
+const galleryTotal = gallerySlides.children.length;
+let autoSlideInterval;
+
+// update posisi slide
+function updateGallery() {
+    gallerySlides.style.transform =
+        `translateX(-${galleryIndex * 100}%)`;
+}
+
+// slide ke kanan
+function nextGallery() {
+    galleryIndex = (galleryIndex + 1) % galleryTotal;
+    updateGallery();
+    resetAutoSlide();
+}
+
+// slide ke kiri
+function prevGallery() {
+    galleryIndex = (galleryIndex - 1 + galleryTotal) % galleryTotal;
+    updateGallery();
+    resetAutoSlide();
+}
+
+// auto slide
+function startAutoSlide() {
+    autoSlideInterval = setInterval(() => {
+        galleryIndex = (galleryIndex + 1) % galleryTotal;
+        updateGallery();
+    }, 3500);
+}
+
+// reset timer saat user klik
+function resetAutoSlide() {
+    clearInterval(autoSlideInterval);
+    startAutoSlide();
+}
+
+// mulai otomatis saat halaman load
+startAutoSlide();
+</script>
 </body>
 </html>
