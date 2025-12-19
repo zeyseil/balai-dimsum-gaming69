@@ -11,14 +11,15 @@
 </head>
 
 <script>
-    let currentItem = null;
-    let currentQty = 1;
-    let selectedType = 'reguler';
+    
+    let currentItem = null; // variable item menu yang terpilih
+    let currentQty = 1; // jumlah stok default 
+    let selectedType = 'reguler'; //tipe menu default
 
     function tampilkanDialog(id, name, image, price) {
-        console.log('Dialog dibuka:', id, name, image, price); // Debug
+        console.log('Dialog dibuka:', id, name, image, price); // Debug ketika pop up terbuka
         
-        currentItem = {
+        currentItem = {    // penginputan dari database menjadi variabel berikut:
             id: id,
             name: name,
             image: image,
@@ -27,15 +28,15 @@
         currentQty = 1;
         selectedType = 'reguler';
         
-        // Update konten dialog dengan data item
-        document.getElementById('dialog-image').src = image;
-        document.getElementById('dialog-image').alt = name;
-        document.getElementById('dialog-name').textContent = 'Dimsum ' + name + ' isi 5';
-        document.getElementById('dialog-price').textContent = 'Rp ' + formatRupiah(price);
-        document.getElementById('qty-number').textContent = currentQty;
-        document.getElementById('dialog-notes').value = '';
+        // Update setiap konten yang terdapat pada dialog(pop up) dengan data item
+        document.getElementById('dialog-image').src = image; // berupa gambar dari database
+        document.getElementById('dialog-image').alt = name; // berupa alternatif dari gambar
+        document.getElementById('dialog-name').textContent = 'Dimsum ' + name + ' isi 5'; // nama menu 
+        document.getElementById('dialog-price').textContent = 'Rp ' + formatRupiah(price); // format harga
+        document.getElementById('qty-number').textContent = currentQty; // jumlah item yang akan dibeli
+        document.getElementById('dialog-notes').value = ''; // catatan untuk menu yang akan dibeli
         
-        // Reset pilihan type
+        // membuat tombol tipe menu bisa di toggle (active)
         document.querySelectorAll('.opt-btn').forEach(btn => {
             btn.classList.remove('active');
             if (btn.dataset.type === 'reguler') {
@@ -46,9 +47,9 @@
         
         
         const dialog = document.getElementById('kotak-dialog');
-        dialog.showModal(); // Ubah dari show() ke showModal()
+        dialog.showModal();  // menyambungkan class dialog agar bisa terhubung dengan javascript
 
-        
+        // membuat background hitam dibelakang pop up yang bisa di tekan untuk menyembunyikan pop up
         dialog.addEventListener('click', function(event) {
         const rect = dialog.getBoundingClientRect();
         const isInDialog = (
@@ -64,24 +65,23 @@
     });
     }
 
-    function sembunyikanDialog() {
+    function sembunyikanDialog() {  // function untuk menyembunyikan pop up
         const dialog = document.getElementById('kotak-dialog');
         dialog.close();
     }
 
-    
-
+    // mengubah jumlah item berdasarkan delta = kurang/ tambah
     function ubahJumlah(delta) {
         currentQty += delta;
         if (currentQty < 1) currentQty = 1;
         document.getElementById('qty-number').textContent = currentQty;
     }
 
-    function formatRupiah(angka) {
+    function formatRupiah(angka) { // function mengubah format nilai angka biasa menjadi rupiah
         return new Intl.NumberFormat('id-ID').format(angka);
     }
 
-    function removeOrder(imageUrl) {
+    function removeOrder(imageUrl) { // function untuk mengubah orderan yang telah diinput pada order list
         const ordersList = document.getElementById('orders-list');
         const orderItems = ordersList.querySelectorAll('.order-item');
         
@@ -92,7 +92,7 @@
             }
         });
     }
-    // Handle pilihan type (Reguler/Mini)
+    // Handle tombol opsi pilihan type (Reguler/Mini)
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.opt-btn').forEach(btn => {
             btn.addEventListener('click', function(e) {
@@ -118,7 +118,7 @@
             subtotal: currentItem.price * currentQty
         };
         
-        console.log('Pesanan ditambahkan:', orderData); // Debug
+        console.log('Pesanan ditambahkan:', orderData); // Debug di konsol ketika pesanan telah ditambahkan pada orderlist
         
         // Tambahkan ke daftar pesanan
         tambahKePesanan(orderData);
@@ -130,7 +130,7 @@
     function tambahKePesanan(orderData) {
         const ordersList = document.getElementById('orders-list');
         
-        // Hapus pesan "belum ada pesanan" jika ada
+        // Hapus pesan "belum ada pesanan" jika belum ada pesanan di panel pesanan
         const emptyMessage = ordersList.querySelector('div[style*="pesanan masuk disini"]');
         if (emptyMessage) {
             ordersList.innerHTML = '';
@@ -143,7 +143,7 @@
         orderItem.className = 'order-item';
         orderItem.id = orderId;
         orderItem.style.cssText = 'padding: 3px; border-bottom: 1px solid #E5E7EB; position: relative; cursor: pointer;';
-        
+        // format elemen pesanan yang baru di tambahkan
         orderItem.innerHTML = `
             <div style="padding: 10px; border-bottom: 1px solid #E5E7EB;">
                 <button class="delete-order-btn" data-order-id="${orderId}" title="Hapus">x</button>
@@ -153,7 +153,7 @@
                 ${orderData.notes ? `<div style="font-size: 12px; color: #9CA3AF;">Catatan: ${orderData.notes}</div>` : ''}
             </div>
         `;
-
+        // membuat tombol hapus pesanan di order list
         const deleteBtn = orderItem.querySelector('.delete-order-btn');
     deleteBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -162,14 +162,14 @@
         const itemToRemove = document.getElementById(orderId);
         if (itemToRemove) {
             itemToRemove.remove();
-            console.log('Order item dihapus:', orderId);
+            console.log('Order item dihapus:', orderId); // debug ketika pesanan berhasil di hapus
         }
 
 
     });
-
+    // membuat agar pesanan di order list bisa di tekan.
         orderItem.addEventListener('click', (e) => {
-            // Jangan buka dialog jika klik tombol delete
+            
             if (!e.target.classList.contains('delete-order-btn')) {
                 tampilkanDialog(orderData.item.id, orderData.item.name, orderData.item.image, orderData.item.price);
             }
@@ -216,7 +216,7 @@
                         </div>
                         <button class="order-btn">Order</button>
                     </div>
-        <!-- Menu Grid -->
+        <!-- bagian menu grid dimana setiap menu yang terdapat di database akan di munculkan disini. -->
                     <div class="menu-grid" id="menu-grid"> 
                         @foreach ($menuItems as $item)
                         <div class="menu-item">
@@ -228,11 +228,12 @@
                 </div>
             </div>
         </div>
-        <dialog id="kotak-dialog" class="modal-dialog">
+        <!-- ini adalah bagian pop up ketika menekan tombol 'tambahkan' pada halaman menu -->
+        <dialog id="kotak-dialog" class="modal-dialog">  z
         <div class="container">
 
     <div class="top-bar">
-      <button class="back-btn" onclick="sembunyikanDialog()">&#8592;</button>
+      <button class="back-btn" onclick="sembunyikanDialog()">&#8592;</button> 
       <span class="title">Menu Info</span>
     </div>
 
