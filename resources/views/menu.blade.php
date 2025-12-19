@@ -11,150 +11,140 @@
 </head>
 
 <script>
-    
     let currentItem = null; // variable item menu yang terpilih
-    let currentQty = 1; // jumlah stok default 
-    let selectedType = 'reguler'; //tipe menu default
+let currentQty = 1; // jumlah stok default
+let selectedType = 'reguler'; // tipe menu default
 
-    function tampilkanDialog(id, name, image, price) {
-        console.log('Dialog dibuka:', id, name, image, price); // Debug ketika pop up terbuka
-        
-        currentItem = {    // penginputan dari database menjadi variabel berikut:
-            id: id,
-            name: name,
-            image: image,
-            price: price
-        };
-        currentQty = 1;
-        selectedType = 'reguler';
-        
-        // Update setiap konten yang terdapat pada dialog(pop up) dengan data item
-        document.getElementById('dialog-image').src = image; // berupa gambar dari database
-        document.getElementById('dialog-image').alt = name; // berupa alternatif dari gambar
-        document.getElementById('dialog-name').textContent = 'Dimsum ' + name + ' isi 5'; // nama menu 
-        document.getElementById('dialog-price').textContent = 'Rp ' + formatRupiah(price); // format harga
-        document.getElementById('qty-number').textContent = currentQty; // jumlah item yang akan dibeli
-        document.getElementById('dialog-notes').value = ''; // catatan untuk menu yang akan dibeli
-        
-        // membuat tombol tipe menu bisa di toggle (active)
-        document.querySelectorAll('.opt-btn').forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.dataset.type === 'reguler') {
-                btn.classList.add('active');
-            }
-        });
-
-        
-        
-        const dialog = document.getElementById('kotak-dialog');
-        dialog.showModal();  // menyambungkan class dialog agar bisa terhubung dengan javascript
-
-        // membuat background hitam dibelakang pop up yang bisa di tekan untuk menyembunyikan pop up
-        dialog.addEventListener('click', function(event) {
-        const rect = dialog.getBoundingClientRect();
-        const isInDialog = (
-            rect.top <= event.clientY &&
-            event.clientY <= rect.top + rect.height &&
-            rect.left <= event.clientX &&
-            event.clientX <= rect.left + rect.width
-        );
-        
-        if (!isInDialog) {
-            sembunyikanDialog();
+function tampilkanDialog(id, name, image, price) {
+    console.log('Dialog dibuka:', id, name, image, price); // debug ketika pop up terbuka
+    
+    currentItem = { // penginputan dari database menjadi variable berikut:
+        id: id,
+        name: name,
+        image: image,
+        price: price,
+        currentPrice: price
+    };
+    currentQty = 1;
+    selectedType = 'reguler';
+    
+    // Update setiap konten yang terdapat pada dialog(pop up) dengan data item
+    document.getElementById('dialog-image').src = image; // berupa gambar dari database
+    document.getElementById('dialog-image').alt = name; // alternatif dari gambar
+    document.getElementById('dialog-name').textContent = 'Dimsum ' + name + ' isi 5'; // nama menu
+    document.getElementById('dialog-price').textContent = 'Rp ' + formatRupiah(price); // format harga
+    document.getElementById('qty-number').textContent = currentQty; // jumlah item yang akan di beli
+    document.getElementById('dialog-notes').value = ''; //catatan pesanan
+    
+    // menu tombol tipe menu agar bisa di toggle(active).
+    document.querySelectorAll('.opt-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.type === 'reguler') {
+            btn.classList.add('active');
         }
     });
+    
+    const dialog = document.getElementById('kotak-dialog');
+    dialog.showModal(); // menyambungkan class dialog agar bisa terhubung dengan javascript
+}
+
+// function menyembunyikan pop up dialog
+function sembunyikanDialog() {
+    const dialog = document.getElementById('kotak-dialog');
+    dialog.close(); 
+}
+
+// mengubah jumlah item berdasarkan delta = kurang / tambah
+function ubahJumlah(delta) {
+    currentQty += delta;
+    if (currentQty < 1) currentQty = 1;
+    document.getElementById('qty-number').textContent = currentQty;
+    updateHargaDialog();
+}
+
+// function untuk mengubah harga dialog berdasarkan tipe (reguler/mini)
+function updateHargaDialog() {
+    if (!currentItem) return;
+    
+    // Mini = 70% (0.7) dari harga reguler (ubah 0.7 sesuai dengan yang dibutuhkan)
+    let hargaAkhir = currentItem.price;
+    if (selectedType === 'mini') {
+        hargaAkhir = Math.floor(currentItem.price * 0.7);
     }
+    
+    // Update tampilan harga setiap mengubah tipe pesanan
+    document.getElementById('dialog-price').textContent = 'Rp ' + formatRupiah(hargaAkhir);
+    
+    // Simpan harga sebenarnya(harga akhir)
+    currentItem.currentPrice = hargaAkhir;
+}
 
-    function sembunyikanDialog() {  // function untuk menyembunyikan pop up
-        const dialog = document.getElementById('kotak-dialog');
-        dialog.close();
-    }
+function formatRupiah(angka) { // function mengubah format nilai angkabiasa menjadi rupiah
+    return new Intl.NumberFormat('id-ID').format(angka);
+}
 
-    // mengubah jumlah item berdasarkan delta = kurang/ tambah
-    function ubahJumlah(delta) {
-        currentQty += delta;
-        if (currentQty < 1) currentQty = 1;
-        document.getElementById('qty-number').textContent = currentQty;
-    }
-
-    function formatRupiah(angka) { // function mengubah format nilai angka biasa menjadi rupiah
-        return new Intl.NumberFormat('id-ID').format(angka);
-    }
-
-    function removeOrder(imageUrl) { // function untuk mengubah orderan yang telah diinput pada order list
-        const ordersList = document.getElementById('orders-list');
-        const orderItems = ordersList.querySelectorAll('.order-item');
-        
-        orderItems.forEach(item => {
-            const img = item.querySelector('.menu-img');
-            if (img && img.src === imageUrl) {
-                item.remove();
-            }
-        });
-    }
-    // Handle tombol opsi pilihan type (Reguler/Mini)
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.opt-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                selectedType = this.dataset.type;
-            });
-        });
-    });
-
-
-
-    function tambahPesanan() {
-        if (!currentItem) return;
-        
-        const notes = document.getElementById('dialog-notes').value;
-        const orderData = {
-            item: currentItem,
-            type: selectedType,
-            quantity: currentQty,
-            notes: notes,
-            subtotal: currentItem.price * currentQty
-        };
-        
-        console.log('Pesanan ditambahkan:', orderData); // Debug di konsol ketika pesanan telah ditambahkan pada orderlist
-        
-        // Tambahkan ke daftar pesanan
-        tambahKePesanan(orderData);
-        
-        // Tutup dialog
-        sembunyikanDialog();
-    }
-
-    function tambahKePesanan(orderData) {
-        const ordersList = document.getElementById('orders-list');
-        
-        // Hapus pesan "belum ada pesanan" jika belum ada pesanan di panel pesanan
-        const emptyMessage = ordersList.querySelector('div[style*="pesanan masuk disini"]');
-        if (emptyMessage) {
-            ordersList.innerHTML = '';
+// function untuk mengubah orderan yang telah diinput pada order list
+function removeOrder(imageUrl) {
+    const ordersList = document.getElementById('orders-list');
+    const orderItems = ordersList.querySelectorAll('.order-item');
+    
+    orderItems.forEach(item => {
+        const img = item.querySelector('.menu-img');
+        if (img && img.src === imageUrl) {
+            item.remove();
         }
-        
-        const orderId = 'order-' + Date.now();
+    });
+}
 
-        // Buat elemen pesanan baru
-        const orderItem = document.createElement('div');
-        orderItem.className = 'order-item';
-        orderItem.id = orderId;
-        orderItem.style.cssText = 'padding: 3px; border-bottom: 1px solid #E5E7EB; position: relative; cursor: pointer;';
-        // format elemen pesanan yang baru di tambahkan
-        orderItem.innerHTML = `
-            <div style="padding: 10px; border-bottom: 1px solid #E5E7EB;">
-                <button class="delete-order-btn" data-order-id="${orderId}" title="Hapus">x</button>
-                <div style="font-weight: 600;">${orderData.item.name} (${orderData.type})</div>
-                <div style="font-size: 14px; color: #6B7280;">Qty: ${orderData.quantity}</div>
-                <div style="font-size: 14px; color: #6B7280;">Rp ${formatRupiah(orderData.subtotal)}</div>
-                ${orderData.notes ? `<div style="font-size: 12px; color: #9CA3AF;">Catatan: ${orderData.notes}</div>` : ''}
-            </div>
-        `;
-        // membuat tombol hapus pesanan di order list
-        const deleteBtn = orderItem.querySelector('.delete-order-btn');
+
+function tambahPesanan() {
+    if (!currentItem) return;
+    
+    const notes = document.getElementById('dialog-notes').value;
+    const hargaSatuan = currentItem.currentPrice || currentItem.price;
+    
+    const orderData = {
+        item: currentItem,
+        type: selectedType,
+        quantity: currentQty,
+        notes: notes,
+        subtotal: hargaSatuan * currentQty
+    };
+    
+    console.log('Pesanan ditambahkan:', orderData);
+    
+    tambahKePesanan(orderData);
+    sembunyikanDialog();
+}
+
+//  
+function tambahKePesanan(orderData) {
+    const ordersList = document.getElementById('orders-list');
+    
+    // Hapus pesan "belum ada pesanan"
+    const emptyMessage = ordersList.querySelector('div[style*="pesanan masuk disini"]');
+    if (emptyMessage) {
+        ordersList.innerHTML = '';
+    }
+    
+    const orderId = 'order-' + Date.now();
+
+    const orderItem = document.createElement('div');
+    orderItem.className = 'order-item';
+    orderItem.id = orderId;
+    orderItem.style.cssText = 'padding: 3px; border-bottom: 1px solid #E5E7EB; position: relative; cursor: pointer;';
+    
+    orderItem.innerHTML = `
+        <div style="padding: 10px; border-bottom: 1px solid #E5E7EB;">
+            <button class="delete-order-btn" data-order-id="${orderId}" title="Hapus">x</button>
+            <div style="font-weight: 600;">${orderData.item.name} (${orderData.type})</div>
+            <div style="font-size: 14px; color: #6B7280;">Qty: ${orderData.quantity}</div>
+            <div style="font-size: 14px; color: #6B7280;">Rp ${formatRupiah(orderData.subtotal)}</div>
+            ${orderData.notes ? `<div style="font-size: 12px; color: #9CA3AF;">Catatan: ${orderData.notes}</div>` : ''}
+        </div>
+    `;
+    
+    const deleteBtn = orderItem.querySelector('.delete-order-btn');
     deleteBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         console.log('Orderan ke: ', orderId, 'telah terhapus.');
@@ -162,21 +152,51 @@
         const itemToRemove = document.getElementById(orderId);
         if (itemToRemove) {
             itemToRemove.remove();
-            console.log('Order item dihapus:', orderId); // debug ketika pesanan berhasil di hapus
+            console.log('Order item dihapus:', orderId);
         }
-
-
     });
-    // membuat agar pesanan di order list bisa di tekan.
-        orderItem.addEventListener('click', (e) => {
+    
+    orderItem.addEventListener('click', (e) => {
+        if (!e.target.classList.contains('delete-order-btn')) {
+            tampilkanDialog(orderData.item.id, orderData.item.name, orderData.item.image, orderData.item.price);
+        }
+    });
+    
+    ordersList.appendChild(orderItem);
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle tombol opsi
+    document.querySelectorAll('.opt-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            selectedType = this.dataset.type;
+            updateHargaDialog();
+        });
+    });
+
+    // Handle click outside dialog (agar bisa keluar dari pop up ketika menekan diluar kotak dialog)
+    const dialog = document.getElementById('kotak-dialog');
+    if (dialog) {
+        dialog.addEventListener('click', function(event) {
+            const rect = dialog.getBoundingClientRect();
+            const isInDialog = (
+                rect.top <= event.clientY &&
+                event.clientY <= rect.top + rect.height &&
+                rect.left <= event.clientX &&
+                event.clientX <= rect.left + rect.width
+            );
             
-            if (!e.target.classList.contains('delete-order-btn')) {
-                tampilkanDialog(orderData.item.id, orderData.item.name, orderData.item.image, orderData.item.price);
+            if (!isInDialog) {
+                sembunyikanDialog();
             }
         });
-        
-        ordersList.appendChild(orderItem);
     }
+});
+    
 </script>
 <body>
     <div class="container">
@@ -229,7 +249,7 @@
             </div>
         </div>
         <!-- ini adalah bagian pop up ketika menekan tombol 'tambahkan' pada halaman menu -->
-        <dialog id="kotak-dialog" class="modal-dialog">  z
+        <dialog id="kotak-dialog" class="modal-dialog">  
         <div class="container">
 
     <div class="top-bar">
@@ -243,7 +263,7 @@
 
     <div class="content">
 
-      <h2 class="menu-name" id="dialog-name">Dimsum isi 5</h2>
+      <h2 class="menu-name1" id="dialog-name">Dimsum isi 5</h2>
       <p class="price" id="dialog-price">Rp :</p>
 
       <div class="option-row">
