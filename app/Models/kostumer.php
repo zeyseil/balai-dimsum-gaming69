@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class saran extends Model
+class kostumer extends Model
 {
     protected $fillable = [
-        'nama',
-        'no_tlp',
-        'isi_saran',
+        'nama_kostumer',
+        'alamat_kostumer',
+        'no_telp_kostumer',
     ];
 }

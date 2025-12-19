@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class saran extends Model
+class menu extends Model
 {
     protected $fillable = [
-        'nama',
-        'no_tlp',
-        'isi_saran',
+        'nama_menu',
+        'harga_menu',
+        'foto_menu',
+        'kategori',
     ];
 }
