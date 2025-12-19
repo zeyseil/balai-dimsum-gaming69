@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class user extends Model
+class menu extends Model
 {
     protected $fillable = [
-        'username',
-        'password',
-        'role',
+        'nama_menu',
+        'harga_menu',
+        'foto_menu',
+        'kategori',
     ];
 }

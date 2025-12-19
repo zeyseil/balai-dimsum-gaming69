@@ -40,18 +40,36 @@ function autoGrow(element) {
         <!-- SARAN FORM -->
 <div class="suggest-box">
     <h2>Berikan kami saran</h2>
-    <form class="suggest-form">
-        <label class="suggest-label">Nama</label>
-        <input type="text" placeholder="masukkan nama anda">
+    <form class="suggest-form" method="POST" action="{{ route('saran.store') }}">
+    @csrf
 
-        <label class="suggest-label">No telepon</label>
-        <input type="text" placeholder="masukkan nomor telepon anda">
+    <label class="suggest-label">Nama</label>
+    <input type="text" name="nama" placeholder="masukkan nama anda" required>
 
-        <label class="suggest-label">Saran</label>
-        <textarea maxlength="1000" id="saran" oninput="autoGrow(this)" placeholder="masukkan saran anda"></textarea>
-        
-        <button>Submit</button>
-    </form>
+    <label class="suggest-label">No telepon</label>
+    <input type="text" name="telepon" placeholder="masukkan nomor telepon anda" required>
+
+    <label class="suggest-label">Saran</label>
+    <textarea name="saran" maxlength="1000"
+        oninput="autoGrow(this)"
+        placeholder="masukkan saran anda" required></textarea>
+
+    <button type="submit">Submit</button>
+
+    {{-- pesan sukses --}}
+    @if(session('success'))
+        <p style="color:green">{{ session('success') }}</p>
+    @endif
+
+    {{-- error validasi --}}
+    @if($errors->any())
+        <ul style="color:red">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    @endif
+</form>
 </div>
 
         <!-- Tagline Section -->
