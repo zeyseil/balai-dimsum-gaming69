@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\SaranController;
 
 
 Route::get('/', function () {
@@ -19,3 +20,4 @@ Route::get('/galeri', function () {
 Route::get('/pesanan', function () {
     return view('pesanan');
 });
+Route::post('/saran', [SaranController::class, 'store'])->name('saran.store');
