@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\SaranController;
 
 
 Route::get('/', function () {
