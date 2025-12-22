@@ -22,6 +22,13 @@ Route::get('/saran', function () {
 Route::get('/galeri', function () {
     return view('galeri');
 });
+Route::get('/pesan', function () {
+    return view('pesan.popup');
+})->name('pesan.popup');
+
+Route::post('/pesan/kirim', [App\Http\Controllers\PesananController::class, 'store'])
+    ->name('pesan.kirim');
+
 // Route::get('/pesanan', function () {
 //     return view('pesanan');
 // });
