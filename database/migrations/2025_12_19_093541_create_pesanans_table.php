@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignid('menu_id')->constrained('menu')->onDelete('cascade');
             $table->date(('tanggal_pesanan'));
             $table->decimal('total_harga',10,2);
+            $table->string('status_pesanan',50);
             $table->timestamps();
         });
     }

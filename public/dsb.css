@@ -502,6 +502,18 @@
         flex-direction: column;
         align-items: center;
     }
+    .bd-tambah {
+        /* margin-bottom: 15px; */
+        padding: 10px 10px;
+        background-color: #18b13e;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0px 4px 0px #0c3b05;
+        transition: 0.2s;
+    }
 
     /* Judul */
     .balai-login-title {

@@ -4,11 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class kostumer extends Model
+class Kostumer extends Model
 {
+    protected $table = 'kostumer';
+    
     protected $fillable = [
-        'nama_kostumer',
-        'alamat_kostumer',
-        'no_telp_kostumer',
+        'nama',
+        'alamat',
+        'no_telepon'
     ];
+
+    public function pesanan()
+    {
+        return $this->hasMany(Pesanan::class);
+    }
 }

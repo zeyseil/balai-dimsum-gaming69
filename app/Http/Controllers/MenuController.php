@@ -1,0 +1,107 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Menu;
+use Illuminate\Support\Facades\Storage;
+
+class MenuController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $menu = Menu::paginate(10);
+        return view('admin.stock', compact('menu'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('admin.buat_menu');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'nama_menu' => 'required|string|max:255',
+            'harga_menu' => 'required|numeric',
+            'foto_menu' => 'required|image',
+            'kategori' => 'required|string|max:100',
+            'stock' => 'required|integer',
+        ]); 
+        $foto =null;
+        if ($request->hasFile('foto_menu')) {
+            $foto = $request->file('foto_menu')->store('images', 'public');
+    }
+    Menu::create([
+        'nama_menu' => $request->nama_menu,
+        'harga_menu' => $request->harga_menu,
+        'foto_menu' => $foto,
+        'kategori' => $request->kategori,
+        'stock' => $request->stock,
+    ]);
+
+        return redirect('/stock')->with('success', 'Menu created successfully');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $menu = Menu::findOrFail($id);
+        return view('admin.edit_menu', compact('menu'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $validatedData = $request->validate([
+            'nama_menu' => 'required|string|max:255',
+            'harga_menu' => 'required|numeric',
+            'foto_menu' => 'nullable|image',
+            'kategori' => 'required|string|max:100',
+            'stock' => 'required|integer',
+        ]);
+        if ($request->hasFile('foto_menu')) {
+            if ($request->image && storage::disk('public')->exists($request->image)) {
+                storage::disk('public')->delete($request->image);
+            }
+            $validatedData['foto_menu'] = $request->file('foto_menu')->store('images', 'public');
+        }
+        Menu::find($id)->update($validatedData);
+        return redirect('/stock')->with('success', 'Menu updated successfully');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $daya = Menu::find($id);
+        if ($daya->foto_menu && Storage::disk('public')->exists($daya->foto_menu)) {
+            Storage::disk('public')->delete($daya->foto_menu);
+        }
+
+        $daya->delete();
+        return redirect('/stock')->with('success', 'Menu deleted successfully');
+    }
+}
