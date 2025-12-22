@@ -17,7 +17,8 @@ return new class extends Migration
             $table->foreignId('menu_id')->constrained('menu')->onDelete('cascade');
             $table->integer('jumlah_pesanan');
             $table->decimal('harga_satuan',10,2);
-            $table->integer('subtotal');
+            $table->integer('subtotal'); 
+            $table->string('keterangan');
             $table->timestamps();
         });
     }
