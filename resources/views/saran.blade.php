@@ -40,17 +40,17 @@ function autoGrow(element) {
         <!-- SARAN FORM -->
 <div class="suggest-box">
     <h2>Berikan kami saran</h2>
-    <form class="suggest-form" method="POST" action="{{ route('saran.store') }}">
+    <form class="suggest-form" method="POST" action="{{ route('saran.store') }}" enctype="multipart/form-data">
     @csrf
 
     <label class="suggest-label">Nama</label>
     <input type="text" name="nama" placeholder="masukkan nama anda" required>
 
     <label class="suggest-label">No telepon</label>
-    <input type="text" name="telepon" placeholder="masukkan nomor telepon anda" required>
+    <input type="text" name="no_tlp" placeholder="masukkan nomor telepon anda" required>
 
     <label class="suggest-label">Saran</label>
-    <textarea name="saran" maxlength="1000"
+    <textarea name="isi_saran" maxlength="1000"
         oninput="autoGrow(this)"
         placeholder="masukkan saran anda" required></textarea>
 

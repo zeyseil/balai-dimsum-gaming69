@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminControler;
 use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -49,7 +50,9 @@ Route::get('/admin/stock', [MenuController::class, 'index']);
 Route::get('/admin/buat_menu', [MenuController::class, 'create']);
 Route::post('/admin/stock', [MenuController::class, 'store']);
 Route::get('/admin/stock/{id}/edit', [MenuController::class, 'edit']);
-Route::put('/admin/stock/{id}', [MenuController::class, 'update']);
+Route::put('/admin/stock/{id}', [MenuController::class, 'update'])->name('menu.update');
 Route::delete('/admin/stock/{id}', [MenuController::class, 'destroy']);
 
-// Route::Resource('/stock', StockController::class);
+//resourcee route crud saran
+Route::post('/saran', [SaranController::class, 'store'])->name('saran.store');
+Route::get('/admin', [AdminControler::class, 'index']);

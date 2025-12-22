@@ -87,7 +87,7 @@ class MenuController extends Controller
             }
             $validatedData['foto_menu'] = $request->file('foto_menu')->store('images', 'public');
         }
-        Menu::find($id)->update($validatedData);
+        Menu::findOrFail($id)->update($validatedData);
         return redirect('/stock')->with('success', 'Menu updated successfully');
     }
 

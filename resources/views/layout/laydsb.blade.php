@@ -16,7 +16,7 @@
             </div>
             <ul class="bd-menu">
                 <li class="bd-menu__item">
-                    <a href="/dashboard" class="bd-menu__link bd-menu__link--aktif"><img src="img/dbs.png"" alt=""> Dashboard</a>
+                    <a href="/admin" class="bd-menu__link bd-menu__link--aktif"><img src="img/dbs.png"" alt=""> Dashboard</a>
                 </li>
                 <li class="bd-menu__item">
                     <a href="/penjualan" class="bd-menu__link"><img src="img/crt.png"" alt=""> Data penjualan</a>

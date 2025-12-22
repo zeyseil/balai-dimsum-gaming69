@@ -115,5 +115,31 @@
                         </tbody>
                     </table>
                 </div>
+                <br>
+               <div class="bd-tabel-wrapper">
+                    <div class="bd-tabel-wrapper__judul">Kritik dan Saran</div>
+                    <table class="bd-tabel">
+                        <thead>
+                            <tr>
+                                <th class="bd-tabel__header" style="width: 35%;">Nama</th>
+                                <th class="bd-tabel__header" style="width: 25%;">No telepon</th>
+                                <th class="bd-tabel__header" style="width: 25%;">Saran</th>
+                                <th class="bd-tabel__header" style="width: 25%;">Tanggal</th>
+
+                            </tr>
+                        </thead>
+                        <tbodyA>
+                            <tr class="bd-tabel__baris">
+                                @foreach ($saran as $s )
+                                    
+                                <td class="bd-tabel__data">{{ $s->nama }}</td>
+                                <td class="bd-tabel__data">{{ $s->no_tlp }}</td>
+                                <td class="bd-tabel__data">{{ $s->isi_saran }}</td>
+                                <td class="bd-tabel__data">{{ $s->created_at }}</td>
+                            </tr>
+                             @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
 @endsection

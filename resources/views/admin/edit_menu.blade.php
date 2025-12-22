@@ -10,7 +10,7 @@
 
 </head>
 <body>
-    <form action="/admin/stock/{id}/edit" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('stock.update', $menu->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="mb-3">
@@ -27,14 +27,14 @@
         </div>
         <div class="mb-3">
             <label for="harga_menu" class="form-label">Harga</label>
-            <input type="number" step="0.01" class="form-control" id="harga_menu" name="harga_menu" value="{{ $menu->harga_menu }}" required>
+            <input type="number" step="0.01" class="form-control" id="harga_menu" name="harga_menu" value="{{ $menu->harga_menu }}" >
         </div>
             <div class="mb-3">
             <label for="foto_menu" class="form-label">Foto Menu</label>
             @if ($menu ->foto_menu)
             <img src="{{ asset('storage/' . $menu->foto_menu) }}" alt="{{ $menu->foto_menu }}" width="100">
             @endif
-            <input type="file" class="form-control" id="foto_menu" name="foto_menu" valie="{{ $menu->foto_menu }}" required>
+            <input type="file" class="form-control" id="foto_menu" name="foto_menu" valie="{{ $menu->foto_menu }}" >
         </div>
         <button type="submit" class="btn btn-success">Simpan Produk</button>
         <a href="/stock" class="btn btn-secondary">Batal</a>

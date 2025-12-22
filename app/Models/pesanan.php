@@ -12,7 +12,7 @@ class Pesanan extends Model
         'kostumer_id',
         'menu_id',
         'tanggal_pesanan',
-        'total_harga'
+        'total_harga'   
     ];
 
     protected $casts = [

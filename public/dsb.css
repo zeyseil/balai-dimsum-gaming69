@@ -95,11 +95,11 @@
             transition: background-color 0.2s ease, color 0.2s ease;
         }
 
-        .bd-menu__link:hover,
+        /* .bd-menu__link:hover,
         .bd-menu__link.bd-menu__link--aktif {
             background-color: var(--warna-biru-muda);
             color: var(--warna-biru);
-        }
+        } */
 
         .bd-main {
             flex: 1;
@@ -507,7 +507,7 @@
         padding: 10px 10px;
         background-color: #18b13e;
         color: white;
-        border: none;
+        border: none;   
         border-radius: 8px;
         cursor: pointer;
         font-weight: bold;
