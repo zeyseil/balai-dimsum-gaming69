@@ -96,6 +96,22 @@ function removeOrder(imageUrl) {
     });
 }
 
+function updateTotalHarga() {
+    const ordersList = document.getElementById('orders-list');
+    const orderItems = ordersList.querySelectorAll('.order-item');
+    let total = 0;
+    
+    // Loop setiap order item dan ambil subtotal
+    orderItems.forEach(item => {
+        const subtotalText = item.querySelector('div:nth-child(3)').textContent;
+        // Ambil angka dari text "Rp 15.000" menjadi 15000
+        const subtotal = parseInt(item.dataset.subtotal) || 0;
+        total += subtotal;
+    });
+    
+    // Update tampilan total harga
+    document.getElementById('total-harga').textContent = 'Rp ' + formatRupiah(total);
+}
 
 function tambahPesanan() {
     if (!currentItem) return;
@@ -114,8 +130,11 @@ function tambahPesanan() {
     console.log('Pesanan ditambahkan:', orderData);
     
     tambahKePesanan(orderData);
+    updateTotalHarga();
     sembunyikanDialog();
 }
+
+
 
 //  
 function tambahKePesanan(orderData) {
@@ -132,6 +151,7 @@ function tambahKePesanan(orderData) {
     const orderItem = document.createElement('div');
     orderItem.className = 'order-item';
     orderItem.id = orderId;
+    orderItem.dataset.subtotal = orderData.subtotal;
     orderItem.style.cssText = 'padding: 3px; border-bottom: 1px solid #E5E7EB; position: relative; cursor: pointer;';
     
     orderItem.innerHTML = `
@@ -152,7 +172,15 @@ function tambahKePesanan(orderData) {
         const itemToRemove = document.getElementById(orderId);
         if (itemToRemove) {
             itemToRemove.remove();
+            updateTotalHarga();
             console.log('Order item dihapus:', orderId);
+
+            const remainingOrders = ordersList.querySelectorAll('.order-item');
+            if (remainingOrders.length === 0) {
+                ordersList.innerHTML = '<div style="display: flex; justify-content: center; color: #6B7280;">pesanan masuk disini</div>';
+                document.getElementById('total-harga').textContent = ('Rp 0');
+            }
+            
         }
     });
     
@@ -163,10 +191,15 @@ function tambahKePesanan(orderData) {
     });
     
     ordersList.appendChild(orderItem);
+
+        setTimeout(() => {
+        hitungTotalPesanan();
+    }, 50);
 }
 
 
 document.addEventListener('DOMContentLoaded', function() {
+    updateTotalHarga();
     // Handle tombol opsi
     document.querySelectorAll('.opt-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
@@ -234,15 +267,21 @@ document.addEventListener('DOMContentLoaded', function() {
                                 pesanan masuk disini
                         </div>
                         </div>
+                        <div style="padding: 15px; border-top: 2px solid #E5E7EB; margin-top: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span style="font-weight: 700; font-size: 16px;">Total:</span>
+            <span id="total-harga" style="font-weight: 700; font-size: 18px; color: #EF4444;"></span>
+        </div>
+    </div>
                         <button class="order-btn">Order</button>
                     </div>
         <!-- bagian menu grid dimana setiap menu yang terdapat di database akan di munculkan disini. -->
                     <div class="menu-grid" id="menu-grid"> 
-                        @foreach ($menuItems as $item)
+                        @foreach ($menu as $item)
                         <div class="menu-item">
-                            <div class="menu-image"><img src="{{ $item->image }}"></div>
-                            <div class="menu-name">{{ $item->name }}</div>
-                            <button class="menu-btn" onclick="tampilkanDialog({{ $item->id }}, '{{ $item->name }}', '{{ $item->image }}', {{ $item->price ?? 0 }})">Tambahkan</button> 
+                            <div class="menu-image"><img src="{{  asset(path:'storage/' . $item-> foto_menu) }}"></div>
+                            <div class="menu-name">{{ $item->nama_menu }}</div>
+                            <button class="menu-btn" onclick="tampilkanDialog({{ $item->id }}, '{{ $item->nama_menu }}', '{{ asset(path:'storage/' . $item-> foto_menu) }}', {{ $item->harga_menu ?? 0 }})">Tambahkan</button> 
                         </div>  @endforeach   
                     </div>
                 </div>
