@@ -9,7 +9,7 @@ class Pesanan extends Model
     protected $table = 'pesanan';
     
     protected $fillable = [
-        'kostumer_id',
+        'pelanggan_id',
         'menu_id',
         'tanggal_pesanan',
         'total_harga'   
@@ -21,7 +21,7 @@ class Pesanan extends Model
 
     public function kostumer()
     {
-        return $this->belongsTo(Kostumer::class);
+        return $this->belongsTo(Pelanggan::class);
     }
 
     public function menu()

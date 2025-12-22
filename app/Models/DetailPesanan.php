@@ -14,7 +14,7 @@ class DetailPesanan extends Model
         'jumlah_pesanan',
         'harga_satuan',
         'subtotal',
-        'keterangan',
+        'catatan',
     ];
 
     public function pesanan()
