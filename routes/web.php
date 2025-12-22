@@ -13,7 +13,9 @@ use App\Http\Controllers\SaranController;
 Route::get('/', function () {
     return view('/home');
 });
-Route::get('/menu');
+Route::get('/menu', function (): mixed {
+    return view('menu');
+});
 
 Route::get('/saran', function () {
     return view('saran');
@@ -21,6 +23,13 @@ Route::get('/saran', function () {
 Route::get('/galeri', function () {
     return view('galeri');
 });
+Route::get('/pesan', function () {
+    return view('pesan.popup');
+})->name('pesan.popup');
+
+Route::post('/pesan/kirim', [App\Http\Controllers\PesananController::class, 'store'])
+    ->name('pesan.kirim');
+
 // Route::get('/pesanan', function () {
 //     return view('pesanan');
 // });
@@ -39,6 +48,9 @@ Route::get('/stock', function(){
 Route::get('/pesanan', function(){
     return view('admin.pemesanan');
 });
+Route::get('/pesan', function () {
+    return view('pesan.popup');
+})->name('pesan.popup');
 
 //crud route
 Route::get('/create', function(){
@@ -52,6 +64,9 @@ Route::post('/admin/stock', [MenuController::class, 'store']);
 Route::get('/admin/stock/{id}/edit', [MenuController::class, 'edit']);
 Route::put('/admin/stock/{id}', [MenuController::class, 'update'])->name('menu.update');
 Route::delete('/admin/stock/{id}', [MenuController::class, 'destroy']);
+Route::get('/menu', [MenuController::class, 'menu']);
+Route::post('/pesan/kirim', [App\Http\Controllers\PesananController::class, 'store'])
+    ->name('pesan.kirim');
 
 //resourcee route crud saran
 Route::post('/saran', [SaranController::class, 'store'])->name('saran.store');

@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Storage;
 
 class MenuController extends Controller
 {
+    public function menu()
+    {
+        $menu = Menu::all();
+        return view('menu', compact('menu'));
+    }
+
     /**
      * Display a listing of the resource.
      */
