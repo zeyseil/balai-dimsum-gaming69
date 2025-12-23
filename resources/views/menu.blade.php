@@ -388,14 +388,25 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
     <script>
-        function keForm() {
-    if (!localStorage.getItem('cart')) {
-        alert('Keranjang masih kosong');
-        return;
-    }
+
+function keForm() {
+    const ordersList = document.getElementById('orders-list');
+    const orderItems = ordersList.querySelectorAll('.order-item');
+
+if (orderItems.length === 0) {
+    ordersList.innerHTML = `
+        <div style="color:red; text-align:center; font-size:14px;">
+            ⚠️ Keranjang masih kosong
+        </div>
+    `;
+    return;
+}
+
+    // jika ada pesanan
     window.location.href = "/popup";
 }
-    </script>
+</script>
+
 </body>
 
 
