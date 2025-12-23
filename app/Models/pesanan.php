@@ -12,14 +12,15 @@ class Pesanan extends Model
         'pelanggan_id',
         'menu_id',
         'tanggal_pesanan',
-        'total_harga'   
+        'total_harga' ,
+        'status_pesanan',  
     ];
 
     protected $casts = [
         'tanggal_pesanan' => 'date'
     ];
 
-    public function kostumer()
+    public function pelanggan()
     {
         return $this->belongsTo(Pelanggan::class);
     }
