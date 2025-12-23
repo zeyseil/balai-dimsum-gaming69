@@ -79,3 +79,4 @@ Route::post('/pesan/kirim', [App\Http\Controllers\PesananController::class, 'sto
 //resourcee route crud saran
 Route::post('/saran', [SaranController::class, 'store'])->name('saran.store');
 Route::get('/admin', [AdminControler::class, 'index']);
+Route::get('/pesanan', [AdminControler::class, 'view'])->name('admin.pesanan');

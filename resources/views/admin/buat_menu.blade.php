@@ -22,7 +22,11 @@
         </div>
         <div class="mb-3">
             <label for="kategori" class="form-label">kategori menu</label>
-            <textarea class="form-control" id="kategori" name="kategori" rows="3"></textarea>
+            {{-- <textarea class="form-control" id="kategori" name="kategori" rows="3"></textarea> --}}
+            <select class="form-control"  name="kategori" id="kategori">
+                <option value="reguler">reguler</option>
+                <option value="mini">mini</option>
+            </select>
         </div>
         <div class="mb-3">
             <label for="harga_menu" class="form-label">Harga</label>
