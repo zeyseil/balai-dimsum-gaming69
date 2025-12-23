@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kostumer;
+use App\Models\pelanggan;
 use Illuminate\Http\Request;
 
 class PesananController extends Controller
@@ -15,7 +15,7 @@ class PesananController extends Controller
             'no_telepon' => 'required|string|max:15',
         ]);
 
-        Kostumer::create([
+        pelanggan::create([
             'nama' => $request->nama,
             'alamat' => $request->alamat,
             'no_telepon' => $request->no_telepon,
