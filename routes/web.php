@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\SaranController;
+use App\Http\Controllers\CheckoutController;
 
 Route::get('/', function () {
     return view('/home');

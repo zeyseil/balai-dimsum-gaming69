@@ -14,6 +14,17 @@ class CheckoutController extends Controller
     {
         DB::transaction(function () use ($request) {
 
+            $request->validate([
+                'orders' => 'required|array',
+                'orders.*.item_id' => 'required|integer',
+                'orders.*.nama_menu' => 'required|string',
+                'orders.*.type' => 'required|string',
+                'orders.*.quantity' => 'required|integer|min:1',
+                'orders.*.subtotal' => 'required|numeric',
+                'orders.*.notes' => 'nullable|string',
+                'total_harga' => 'required|numeric'
+            ]);
+
             $pelanggan = pelanggan::create([
                 'nama'    => $request->nama,
                 'telepon' => $request->telepon,
@@ -25,18 +36,18 @@ class CheckoutController extends Controller
             $pesanan = Pesanan::create([
                 'pelanggan_id' => $pelanggan->id,
                 'tanggal_pesanan' => now(),
-                'total_harga' => collect($cart)->sum('subtotal'),
+                'total_harga' => $request->total_harga,
                 'status_pesanan' => 'pending',
             ]);
 
-            foreach ($cart as $item) {
+            foreach ($request->orders as $order) {
                 DetailPesanan::create([
                     'pesanan_id' => $pesanan->id,
-                    'menu_id' => $item['item']['id'],
-                    'jumlah_pesanan' => $item['quantity'],
-                    'harga_satuan' => $item['item']['currentPrice'],
-                    'subtotal' => $item['subtotal'],
-                    'keterangan' => $item['notes'] ?? null,
+                    'menu_id' =>  $order['item_id'],
+                    'jumlah_pesanan' => $order['quantity'],
+                    'harga_satuan' => $order['subtotal'] / $order['quantity'],
+                    'subtotal' => $order['subtotal'],
+                    'keterangan' => $order['notes'] ?? null,
                 ]);
             }
         });

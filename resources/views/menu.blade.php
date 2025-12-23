@@ -136,6 +136,7 @@ function tambahPesanan() {
 }
 
 
+
 //  
 function tambahKePesanan(orderData) {
     const ordersList = document.getElementById('orders-list');
@@ -151,7 +152,14 @@ function tambahKePesanan(orderData) {
     const orderItem = document.createElement('div');
     orderItem.className = 'order-item';
     orderItem.id = orderId;
+
+    orderItem.dataset.itemId = orderData.item.id;
+    orderItem.dataset.namaMenu = orderData.item.name;
+    orderItem.dataset.type = orderData.type;
+    orderItem.dataset.quantity = orderData.quantity;
     orderItem.dataset.subtotal = orderData.subtotal;
+    orderItem.dataset.notes = orderData.notes || '';
+
     orderItem.style.cssText = 'padding: 3px; border-bottom: 1px solid #E5E7EB; position: relative; cursor: pointer;';
     
     orderItem.innerHTML = `
@@ -183,6 +191,8 @@ function tambahKePesanan(orderData) {
             
         }
     });
+
+    
     
     orderItem.addEventListener('click', (e) => {
         if (!e.target.classList.contains('delete-order-btn')) {
@@ -195,6 +205,28 @@ function tambahKePesanan(orderData) {
         setTimeout(() => {
         hitungTotalPesanan();
     }, 50);
+}
+
+// Fungsi untuk mengumpulkan semua pesanan
+function ambilSemuaPesanan() {
+    const ordersList = document.getElementById('orders-list');
+    const orderItems = ordersList.querySelectorAll('.order-item');
+    const orders = [];
+    
+    orderItems.forEach(item => {
+        // Ambil data dari setiap order item
+        const itemData = {
+            item_id: parseInt(item.dataset.itemId),
+            nama_menu: item.dataset.namaMenu,
+            type: item.dataset.type,
+            quantity: parseInt(item.dataset.quantity),
+            subtotal: parseInt(item.dataset.subtotal),
+            notes: item.dataset.notes || ''
+        };
+        orders.push(itemData);
+    });
+    
+    return orders;
 }
 
 
@@ -273,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span id="total-harga" style="font-weight: 700; font-size: 18px; color: #EF4444;"></span>
         </div>
     </div>
-                        <button class="order-btn" onclick="keForm()">Order</button>
+                        <button class="order-btn" method="POST" action="{{ route('checkout.store') }}" onclick="keForm()">Order</button>
 
                     </div>
         <!-- bagian menu grid dimana setiap menu yang terdapat di database akan di munculkan disini. -->
