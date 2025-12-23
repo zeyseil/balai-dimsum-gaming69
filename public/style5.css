@@ -48,29 +48,41 @@ textarea {
     border: 1px solid #ccc;
 }
 
-/* Tombol */
-.btn-wrapper {
-    display: flex;
-    justify-content: space-between;
+/* Tombol Kirim */
+button[type="submit"] {
+    width: 100%;
+    padding: 14px 0;
     margin-top: 20px;
-}
-
-.btn-kirim {
-    background: #b91c1c;
-    color: #fff;
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
     border: none;
-    padding: 10px 20px;
-    border-radius: 25px;
+    border-radius: 10px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(239, 68, 68, 0.35);
 }
 
-.btn-batal {
-    background: #6b7280;
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 20px;
-    border-radius: 25px;
+/* Hover */
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(239, 68, 68, 0.45);
+    background: linear-gradient(135deg, #DC2626, #B91C1C);
 }
+
+/* Saat ditekan */
+button[type="submit"]:active {
+    transform: scale(0.97);
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.35);
+}
+
+/* Fokus (aksesibilitas) */
+button[type="submit"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+}
+
 
 /* Animasi */
 @keyframes scaleIn {

@@ -132,8 +132,8 @@ function tambahPesanan() {
     tambahKePesanan(orderData);
     updateTotalHarga();
     sembunyikanDialog();
-}
 
+}
 
 
 //  
@@ -273,7 +273,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <span id="total-harga" style="font-weight: 700; font-size: 18px; color: #EF4444;"></span>
         </div>
     </div>
-                        <button class="order-btn">Order</button>
+                        <button class="order-btn" onclick="keForm()">Order</button>
+
                     </div>
         <!-- bagian menu grid dimana setiap menu yang terdapat di database akan di munculkan disini. -->
                     <div class="menu-grid" id="menu-grid"> 
@@ -386,6 +387,26 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
     </div>
+    <script>
+
+function keForm() {
+    const ordersList = document.getElementById('orders-list');
+    const orderItems = ordersList.querySelectorAll('.order-item');
+
+if (orderItems.length === 0) {
+    ordersList.innerHTML = `
+        <div style="color:red; text-align:center; font-size:14px;">
+            ⚠️ Keranjang masih kosong
+        </div>
+    `;
+    return;
+}
+
+    // jika ada pesanan
+    window.location.href = "/popup";
+}
+</script>
+
 </body>
 
 
