@@ -9,6 +9,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\SaranController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\PesananController;
 
 Route::get('/', function () {
     return view('/home');
@@ -34,8 +35,8 @@ Route::get('/popup', function () {
     return view('popup');
 });
 
-Route::post('/checkout', [CheckoutController::class, 'store'])
-    ->name('checkout.store');
+// Route::post('/checkout', [CheckoutController::class, 'store'])
+//     ->name('checkout.store');
 
 
 // Route::get('/pesanan', function () {
@@ -73,8 +74,6 @@ Route::get('/admin/stock/{id}/edit', [MenuController::class, 'edit']);
 Route::put('/admin/stock/{id}', [MenuController::class, 'update'])->name('menu.update');
 Route::delete('/admin/stock/{id}', [MenuController::class, 'destroy']);
 Route::get('/menu', [MenuController::class, 'menu']);
-Route::post('/pesan/kirim', [App\Http\Controllers\PesananController::class, 'store'])
-    ->name('pesan.kirim');
 
 //resourcee route crud saran
 Route::post('/saran', [SaranController::class, 'store'])->name('saran.store');

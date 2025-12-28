@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\pelanggan;
 use App\Models\Pesanan;
 use App\Models\DetailPesanan;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
@@ -31,8 +31,6 @@ class CheckoutController extends Controller
                 'alamat'  => $request->alamat,
             ]);
 
-            $cart = json_decode($request->cart, true);
-
             $pesanan = Pesanan::create([
                 'pelanggan_id' => $pelanggan->id,
                 'tanggal_pesanan' => now(),
@@ -50,6 +48,7 @@ class CheckoutController extends Controller
                     'keterangan' => $order['notes'] ?? null,
                 ]);
             }
+                        
         });
 
         return redirect()->back()->with('success', 'Pesanan berhasil dibuat');

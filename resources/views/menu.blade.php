@@ -8,6 +8,173 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Jua&display=swap" rel="stylesheet">
     <link rel="stylesheet" href='style2.css'>
     <link rel="stylesheet" href="style1.css">
+    <style>
+        <style>
+        
+.checkout-modal {
+    
+    position: fixed;
+    top: 50%;           /* 50% dari atas */
+    left: 50%;          /* 50% dari kiri */
+    transform: translate(-50%, -50%);
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    border: none;
+    padding: 0;
+    border-radius: 20px;
+
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+#checkout-modal:hover{
+    box-shadow: 0 20px 50px rgba(255, 255, 255, 0.25);
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+.checkout-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.checkout-content {
+    background: #fff;
+    width: 400px;
+    padding: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    animation: scaleIn .3s ease;
+    border : none;
+    outline: none;
+}
+
+.checkout-header {
+    text-align: center;
+    color: #b91c1c;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.order-summary {
+    background-color: #F3F4F6;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.order-summary-title {
+    text-align: center;
+    color: #b91c1c;
+    margin-bottom: 15px;
+}
+
+.order-item-summary {
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 5px;
+}
+
+.total-summary {
+    font-size: 18px;
+    font-weight: bold;
+    color: #EF4444;
+    text-align: right;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 2px solid #E5E7EB;
+}
+
+.checkout-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-submit,
+.btn-cancel {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-submit {
+    background-color: #EF4444;
+    color: white;
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(239, 68, 68, 0.45);
+    background: linear-gradient(135deg, #DC2626, #B91C1C);
+}
+
+.btn-submit:disabled {
+    background-color: #9CA3AF;
+    cursor: not-allowed;
+}
+
+.btn-submit,.btn-cancel:active {
+    transform: scale(0.97);
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.35);
+}
+
+.btn-submit,.btn-cancel:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+}
+
+.btn-cancel {
+    background-color: #E5E7EB;
+    color: #374151;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+    transform: translateY(-2px);
+    background-color: #D1D5DB;
+    box-shadow: 0 10px 22px rgba(239, 68, 68, 0.45);
+}
+</style>
+
 </head>
 
 <script>
@@ -135,7 +302,29 @@ function tambahPesanan() {
 
 }
 
+// Fungsi untuk mengumpulkan semua pesanan
+function ambilSemuaPesanan() {
+    const ordersList = document.getElementById('orders-list');
+    const orderItems = ordersList.querySelectorAll('.order-item');
+    const orders = [];
+    
+    orderItems.forEach(item => {
 
+        
+        // Ambil data dari setiap order item
+        const itemData = {
+            item_id: parseInt(item.dataset.itemId),
+            nama_menu: item.dataset.namaMenu,
+            type: item.dataset.type,
+            quantity: parseInt(item.dataset.quantity),
+            subtotal: parseInt(item.dataset.subtotal),
+            notes: item.dataset.notes || ''
+        };
+        orders.push(itemData);
+    });
+    
+    return orders;
+}
 
 //  
 function tambahKePesanan(orderData) {
@@ -153,13 +342,14 @@ function tambahKePesanan(orderData) {
     orderItem.className = 'order-item';
     orderItem.id = orderId;
 
-    orderItem.dataset.itemId = orderData.item.id;
-    orderItem.dataset.namaMenu = orderData.item.name;
-    orderItem.dataset.type = orderData.type;
-    orderItem.dataset.quantity = orderData.quantity;
-    orderItem.dataset.subtotal = orderData.subtotal;
-    orderItem.dataset.notes = orderData.notes || '';
+    orderItem.dataset.itemId = String(orderData.item.id);
+    orderItem.dataset.namaMenu = String(orderData.item.name);
+    orderItem.dataset.type = String(orderData.type);
+    orderItem.dataset.quantity = String(orderData.quantity);
+    orderItem.dataset.subtotal = String(orderData.subtotal);
+    orderItem.dataset.notes = String(orderData.notes || '');
 
+    orderItem.dataset.subtotal = orderData.subtotal;
     orderItem.style.cssText = 'padding: 3px; border-bottom: 1px solid #E5E7EB; position: relative; cursor: pointer;';
     
     orderItem.innerHTML = `
@@ -191,8 +381,6 @@ function tambahKePesanan(orderData) {
             
         }
     });
-
-    
     
     orderItem.addEventListener('click', (e) => {
         if (!e.target.classList.contains('delete-order-btn')) {
@@ -205,28 +393,6 @@ function tambahKePesanan(orderData) {
         setTimeout(() => {
         hitungTotalPesanan();
     }, 50);
-}
-
-// Fungsi untuk mengumpulkan semua pesanan
-function ambilSemuaPesanan() {
-    const ordersList = document.getElementById('orders-list');
-    const orderItems = ordersList.querySelectorAll('.order-item');
-    const orders = [];
-    
-    orderItems.forEach(item => {
-        // Ambil data dari setiap order item
-        const itemData = {
-            item_id: parseInt(item.dataset.itemId),
-            nama_menu: item.dataset.namaMenu,
-            type: item.dataset.type,
-            quantity: parseInt(item.dataset.quantity),
-            subtotal: parseInt(item.dataset.subtotal),
-            notes: item.dataset.notes || ''
-        };
-        orders.push(itemData);
-    });
-    
-    return orders;
 }
 
 
@@ -305,13 +471,13 @@ document.addEventListener('DOMContentLoaded', function() {
             <span id="total-harga" style="font-weight: 700; font-size: 18px; color: #EF4444;"></span>
         </div>
     </div>
-                        <button class="order-btn" method="POST" action="{{ route('checkout.store') }}" onclick="keForm()">Order</button>
+                        <button class="order-btn" onclick="keForm()">Order</button>
 
                     </div>
         <!-- bagian menu grid dimana setiap menu yang terdapat di database akan di munculkan disini. -->
                     <div class="menu-grid" id="menu-grid"> 
                         @foreach ($menu as $item)
-                        <div class="menu-item">
+                        <div class="menu-item" style="box-sizing: border-box;">
                             <div class="menu-image"><img src="{{  asset(path:'storage/' . $item-> foto_menu) }}"></div>
                             <div class="menu-name">{{ $item->nama_menu }}</div>
                             <button class="menu-btn" onclick="tampilkanDialog({{ $item->id }}, '{{ $item->nama_menu }}', '{{ asset(path:'storage/' . $item-> foto_menu) }}', {{ $item->harga_menu ?? 0 }})">Tambahkan</button> 
@@ -320,7 +486,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         </div>
-        <!-- ini adalah bagian pop up ketika menekan tombol 'tambahkan' pada halaman menu -->
+<!-- ini adalah bagian pop up ketika menekan tombol 'tambahkan' pada halaman menu -->
         <dialog id="kotak-dialog" class="modal-dialog">  
         <div class="container">
 
@@ -362,6 +528,50 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
       <button class="tambah-btn" onclick="tambahPesanan()">Tambahkan</button>
     </dialog>
+
+<!-- POP UP CHECKOUT -->
+    <dialog id="checkout-modal" class="checkout-modal" style="border: none; outline: none; padding: 0; border-radius: 15px;">
+    <div class="checkout-content">
+        <h2 class="checkout-header">Form Checkout</h2>
+        
+        <form id="checkout-form" method="POST" action="{{ route('pesan.kirim') }}">
+            @csrf
+            
+            <!-- Ringkasan Pesanan -->
+            <div class="order-summary">
+                <div class="order-summary-title">Ringkasan Pesanan:</div>
+                <div id="checkout-order-list"></div>
+                <div class="total-summary" id="checkout-total">Total: Rp 0</div>
+            </div>
+            
+            <!-- Data Pelanggan -->
+            <div class="form-group">
+                <label for="nama">Nama</label>
+                <input type="text" id="nama" name="nama" required placeholder="Masukkan nama lengkap">
+            </div>
+            
+            <div class="form-group">
+                <label for="telepon">No. Telepon *</label>
+                <input type="tel" id="no_telepon" name="no_telepon" maxlength="15" required placeholder="08xxxxxxxxxx">
+            </div>
+            
+            <div class="form-group">
+                <label for="alamat">Alamat Pengiriman *</label>
+                <textarea id="alamat" name="alamat" required placeholder="Masukkan alamat lengkap"></textarea>
+            </div>
+            
+            <!-- Hidden inputs untuk data pesanan -->
+            <input type="hidden" name="orders" id="orders-data">
+            <input type="hidden" name="total_harga" id="total-harga-input">
+            
+            <!-- Tombol -->
+            <div class="checkout-buttons">
+                <button type="button" class="btn-cancel" onclick="tutupCheckout()">Batal</button>
+                <button type="submit" class="btn-submit" id="submit-checkout">Konfirmasi Pesanan</button>
+            </div>
+        </form>
+    </div>
+</dialog>
 
         <!-- Tagline Section -->
         <div class="tagline-section">
@@ -422,21 +632,63 @@ document.addEventListener('DOMContentLoaded', function() {
     <script>
 
 function keForm() {
-    const ordersList = document.getElementById('orders-list');
-    const orderItems = ordersList.querySelectorAll('.order-item');
-
-if (orderItems.length === 0) {
-    ordersList.innerHTML = `
-        <div style="color:red; text-align:center; font-size:14px;">
-            ⚠️ Keranjang masih kosong
+    const orders = ambilSemuaPesanan();
+    
+    // Validasi: cek apakah ada pesanan
+    if (orders.length === 0) {
+        alert('Belum ada pesanan yang ditambahkan!');
+        return;
+    }
+    
+    // Ambil total harga
+    const totalHargaText = document.getElementById('total-harga').textContent;
+    const totalHarga = parseInt(totalHargaText.replace(/[^0-9]/g, ''));
+    
+    // Tampilkan ringkasan pesanan di modal
+    const orderListHtml = orders.map(order => `
+        <div class="order-item-summary">
+            ${order.nama_menu} (${order.type}) - ${order.quantity}x - Rp ${formatRupiah(order.subtotal)}
         </div>
-    `;
-    return;
+    `).join('');
+    
+    document.getElementById('checkout-order-list').innerHTML = orderListHtml;
+    document.getElementById('checkout-total').textContent = 'Total: Rp ' + formatRupiah(totalHarga);
+    
+    // Simpan data ke hidden input
+    document.getElementById('orders-data').value = JSON.stringify(orders);
+    document.getElementById('total-harga-input').value = totalHarga;
+    
+    // Buka modal
+    document.getElementById('checkout-modal').showModal();
 }
 
-    // jika ada pesanan
-    window.location.href = "/popup";
+// Fungsi untuk menutup modal checkout
+function tutupCheckout() {
+    document.getElementById('checkout-modal').close();
+    document.getElementById('checkout-form').reset();
 }
+
+// Handle form submit
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    const submitBtn = document.getElementById('submit-checkout');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Memproses...';
+});
+
+// Close modal when clicking outside
+document.getElementById('checkout-modal').addEventListener('click', function(event) {
+    const rect = this.getBoundingClientRect();
+    const isInDialog = (
+        rect.top <= event.clientY &&
+        event.clientY <= rect.top + rect.height &&
+        rect.left <= event.clientX &&
+        event.clientX <= rect.left + rect.width
+    );
+    
+    if (!isInDialog) {
+        tutupCheckout();
+    }
+});
 </script>
 
 </body>

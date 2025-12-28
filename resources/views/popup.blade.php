@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Form Delivery</title>
 
-    <!-- CSS TERPISAH -->
+
     <link rel="stylesheet" href="{{ asset('style5.css') }}">
-</head>
-<body>
-
 <div class="overlay">
     <div class="modal">
         <h2>Isi Datadiri</h2>
@@ -30,6 +22,3 @@
 
     </div>
 </div>
-
-</body>
-</html>

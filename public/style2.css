@@ -8,11 +8,13 @@
             font-family: 'Inter', sans-serif;
             background: #6C6969;
             overflow-x: hidden;
+            scrollbar-gutter: stable;
         }
 
         .container {
             position: relative;
-            width: 1440px;
+            max-width: 1440px;
+            width: 100%;
             margin: 0 auto;
             background: #FFFFFF;
         }
@@ -344,6 +346,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 40px;
+            overflow: hidden;
         }
 
         .menu-title {
@@ -357,6 +360,7 @@
          .menu-content {
             display: flex;
             gap: 30px;
+            overflow: hidden;
         }
 
         /* Sidebar */
@@ -367,6 +371,10 @@
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            height: 100%;
+            max-height: 600px;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         .sidebar-title {
@@ -464,6 +472,11 @@
             text-align: center;
             transition: transform 0.3s;
             margin-bottom: 20px;
+            height: 100%;
+            max-height: 330px;
+            width: 100%;
+            flex: 1;
+            overflow: hidde;
         }
 
         .menu-item:hover {
