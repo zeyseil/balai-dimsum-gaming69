@@ -14,26 +14,17 @@ class MenuController extends Controller
         return view('menu', compact('menu'));
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $menu = Menu::paginate(10);
         return view('admin.stock', compact('menu'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.buat_menu');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -58,26 +49,17 @@ class MenuController extends Controller
         return redirect('/stock')->with('success', 'Menu created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
+        
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $menu = Menu::findOrFail($id);
         return view('admin.edit_menu', compact('menu'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $validatedData = $request->validate([
@@ -97,9 +79,6 @@ class MenuController extends Controller
         return redirect('/stock')->with('success', 'Menu updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $daya = Menu::find($id);

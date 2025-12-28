@@ -19,26 +19,22 @@ class PesananController extends Controller
                 'nama' => 'required|string|max:50',
                 'alamat' => 'required|string|max:100',
                 'no_telepon' => 'required|string|max:15',
-                'orders' => 'required|string', // orders dikirim sebagai JSON string
+                'orders' => 'required|string',
                 'total_harga' => 'required|numeric|min:0'
             ]);
 
-            // Decode JSON string menjadi array
+
             $orders = json_decode($request->orders, true);
             
-            // Validasi hasil decode
             if (empty($orders) || !is_array($orders)) {
                 Log::error('Orders tidak valid', ['orders' => $request->orders]);
                 return redirect()->back()->with('error', 'Format pesanan tidak valid');
             }
 
-            // Debug log
             Log::info('Orders received', ['orders' => $orders]);
 
-            // Mulai database transaction
             DB::beginTransaction();
 
-            // Simpan data pelanggan
             $pelanggan = Pelanggan::create([
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,

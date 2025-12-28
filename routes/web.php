@@ -34,6 +34,10 @@ Route::post('/pesan/kirim', [App\Http\Controllers\PesananController::class, 'sto
 Route::get('/popup', function () {
     return view('popup');
 });
+Route::get('/checkout', function () {
+    return view('checkout');
+});
+
 
 // Route::post('/checkout', [CheckoutController::class, 'store'])
 //     ->name('checkout.store');
