@@ -15,7 +15,7 @@
         @method('PUT')
         <div class="mb-3">
             <label for="nama_menu" class="form-label">Nama menu</label>
-            <input type="text" class="form-control" id="nama_menu" name="nama_menu" value="{{ $menu->nama_menu }}"  required> aa
+            <input type="text" class="form-control" id="nama_menu" name="nama_menu" value="{{ $menu->nama_menu }}"  required>
         </div>
         <div class="mb-3">
             <label for="stock" class="form-label">stock</label>
