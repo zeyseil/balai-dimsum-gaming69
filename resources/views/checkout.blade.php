@@ -22,23 +22,23 @@
         <!-- Ringkasan Pesanan -->
         <div class="card">
             <h2>Ringkasan Pesanan</h2>
-
-            <div class="row">
-                <span>Dimsum Ayam (2x)</span>
-                <span>Rp 40.000</span>
-            </div>
-
-            <div class="row">
-                <span>Dimsum Udang (1x)</span>
-                <span>Rp 25.000</span>
-            </div>
-
-            <hr>
-
-            <div class="row total">
-                <span>Total</span>
-                <span>Rp 65.000</span>
-            </div>
+            @if(isset($detailPesanan) && count($detailPesanan) > 0)
+                @foreach($detailPesanan as $detail)
+                    <div class="row">
+                        <span>{{ $detail->menu->nama_menu }} ({{ $detail->jumlah_pesanan }}x)</span>
+                        <span>Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</span>
+                    </div>
+                @endforeach
+                <hr>
+                <div class="row total">
+                    <span>Total</span>
+                    <span>Rp {{ number_format($pesanan->total_harga, 0, ',', '.') }}</span>
+                </div>
+            @else
+                <div class="row">
+                    <span>Tidak ada detail pesanan</span>
+                </div>
+            @endif
         </div>
 
         <!-- Metode Pembayaran -->

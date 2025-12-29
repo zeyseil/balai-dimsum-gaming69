@@ -184,8 +184,23 @@ class AdminControler extends Controller
                 'tanggal_pembayaran' => now()
             ]);
             
+            // Check if request expects JSON
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Pembayaran telah dikonfirmasi dan status diubah menjadi Dibayar'
+                ], 200);
+            }
+            
             return redirect()->back()->with('success', 'Pembayaran telah dikonfirmasi dan status diubah menjadi Dibayar');
         } catch (\Exception $e) {
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal mengonfirmasi pembayaran: ' . $e->getMessage()
+                ], 500);
+            }
+            
             return redirect()->back()->with('error', 'Gagal mengonfirmasi pembayaran: ' . $e->getMessage());
         }
     }

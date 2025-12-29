@@ -10,7 +10,16 @@ class PaymentController extends Controller
 {
     public function index($pesanan_id)
     {
-        return view('checkout', compact('pesanan_id'));
+        $pesanan = \App\Models\Pesanan::with(['detailPesanan.menu', 'pelanggan'])->find($pesanan_id);
+        if (!$pesanan) {
+            return redirect()->back()->with('error', 'Pesanan tidak ditemukan');
+        }
+        $detailPesanan = $pesanan->detailPesanan;
+        return view('checkout', [
+            'pesanan_id' => $pesanan_id,
+            'pesanan' => $pesanan,
+            'detailPesanan' => $detailPesanan
+        ]);
     }
 
 
@@ -23,7 +32,9 @@ class PaymentController extends Controller
 
         $file = $request->file('bukti_pembayaran');
         $filename = time() . '.' . $file->extension();
-        $file->storeAs('public/bukti', $filename);
+        
+        // Simpan langsung ke public folder agar bisa diakses
+        $file->move(public_path('bukti'), $filename);
 
         Pembayaran::create([
             'pesanan_id' => $request->pesanan_id,

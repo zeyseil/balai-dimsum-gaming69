@@ -45,13 +45,13 @@ Route::post('/pembayaran/store', [PaymentController::class, 'store'])
     ->name('pembayaran.store');
 
 
-// Route::post('/checkout', [CheckoutController::class, 'store'])
-//     ->name('checkout.store');
+Route::post('/checkout', [CheckoutController::class, 'store'])
+    ->name('checkout.store');
 
 
-// Route::get('/pesanan', function () {
-//     return view('pesanan');
-// });
+Route::get('/pesanan', function () {
+    return view('pesanan');
+});
 
 // ===== LOGIN ROUTES =====
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');

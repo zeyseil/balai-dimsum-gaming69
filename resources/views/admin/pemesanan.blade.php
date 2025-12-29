@@ -61,15 +61,25 @@
             <tr class="bd-tabel__baris">
                 <td class="bd-tabel__data">{{ $p->pesanan->pelanggan->nama }}</td>
                 <td class="bd-tabel__data">{{ $p->pesanan->pelanggan->alamat }}</td>
-                <td class="bd-tabel__data">{{ $p->pesanan->menu->nama_menu }}</td>
                 <td class="bd-tabel__data">
-                    <span class="bd-status {{ $p->pesanan->pembayaran && $p->pesanan->pembayaran->status_pembayaran == 'dibayar' ? 'bd-status--selesai' : 'bd-status--diantar' }}">
-                        {{ $p->pesanan->pembayaran && $p->pesanan->pembayaran->status_pembayaran == 'dibayar' ? 'Dibayar' : 'Dikonfirmasi' }}
-                    </span>
-                    @if($p->pesanan->pembayaran && $p->pesanan->pembayaran->bukti_pembayaran)
-                    <button onclick="showBuktiModal('{{ asset('storage/' . $p->pesanan->pembayaran->bukti_pembayaran) }}', '{{ $p->pesanan->pembayaran->id }}')" style="margin-left: 5px; padding: 4px 8px; background-color: #0066cc; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 11px;">
-                        👁️ View
-                    </button>
+                    @foreach($p->pesanan->detailPesanan as $detail)
+                        <div>{{ $detail->menu->nama_menu }} ({{ $detail->jumlah_pesanan }}x)</div>
+                    @endforeach
+                </td>
+                <td class="bd-tabel__data">
+                    @if($p->pesanan->pembayaran)
+                        <span class="bd-status {{ $p->pesanan->pembayaran->status_pembayaran == 'dibayar' ? 'bd-status--selesai' : 'bd-status--diantar' }}">
+                            {{ ucfirst($p->pesanan->pembayaran->status_pembayaran) }}
+                        </span>
+                        @if($p->pesanan->pembayaran->bukti_pembayaran)
+                        <button onclick="showBuktiModal('{{ asset('bukti/' . $p->pesanan->pembayaran->bukti_pembayaran) }}', '{{ $p->pesanan->pembayaran->id }}')" style="margin-left: 5px; padding: 4px 8px; background-color: #0066cc; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 11px;">
+                             Lihat
+                        </button>
+                        @endif
+                    @else
+                        <span class="bd-status" style="background-color: #dc3545; color: white;">
+                            Belum Bayar
+                        </span>
                     @endif
                 </td>
                 <td class="bd-tabel__data">
@@ -141,7 +151,6 @@
         align-items: center;
         justify-content: center;
     }
-
     .modal-overlay.active {
         display: flex;
     }
@@ -250,7 +259,7 @@
             <button class="modal-close" onclick="closeBuktiModal()">✕</button>
         </div>
         <div class="modal-body">
-            <img id="buktiImage" src="" alt="Bukti Pembayaran" class="bukti-image">
+            <img id="buktiImage" src="" alt="Bukti Pembayaran" class="bukti-image" onerror="handleImageError()">
             <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
                 <p style="margin: 0 0 10px 0; color: #666; font-size: 14px;">
                     <strong>Status Pembayaran:</strong> <span id="statusPembayaran" style="color: #28a745; font-weight: bold;">Menunggu Konfirmasi</span>
@@ -266,16 +275,26 @@
 
 <script>
     let currentPembayaranId = null;
+    let currentImageUrl = null;
 
     function showBuktiModal(imageUrl, pembayaranId) {
         currentPembayaranId = pembayaranId;
-        document.getElementById('buktiImage').src = imageUrl;
+        currentImageUrl = imageUrl;
+        const img = document.getElementById('buktiImage');
+        img.src = imageUrl;
+        console.log('Loading image:', imageUrl);
         document.getElementById('buktiModal').classList.add('active');
     }
 
     function closeBuktiModal() {
         document.getElementById('buktiModal').classList.remove('active');
         currentPembayaranId = null;
+        currentImageUrl = null;
+    }
+
+    function handleImageError() {
+        console.error('Gambar tidak bisa dimuat dari:', currentImageUrl);
+        document.getElementById('buktiImage').alt = 'Gambar tidak ditemukan - Path: ' + currentImageUrl;
     }
 
     function confirmPembayaran() {
@@ -285,32 +304,50 @@
         }
 
         if (confirm('Apakah Anda yakin ingin mengkonfirmasi pembayaran ini?')) {
-            // Submit form untuk confirm pembayaran
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '{{ url("/pembayaran") }}/' + currentPembayaranId + '/confirm';
-            
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-            if (csrfToken) {
-                const csrfInput = document.createElement('input');
-                csrfInput.type = 'hidden';
-                csrfInput.name = '_token';
-                csrfInput.value = csrfToken;
-                form.appendChild(csrfInput);
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+            if (!csrfToken) {
+                alert('CSRF token tidak ditemukan!');
+                return;
             }
 
-            const methodInput = document.createElement('input');
-            methodInput.type = 'hidden';
-            methodInput.name = '_method';
-            methodInput.value = 'PATCH';
-            form.appendChild(methodInput);
-
-            document.body.appendChild(form);
-            form.submit();
+            fetch('{{ route("pembayaran.confirm", ":id") }}'.replace(':id', currentPembayaranId), {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json().then(data => ({
+                        status: response.status,
+                        data: data
+                    }));
+                } else {
+                    return response.text().then(text => {
+                        throw new Error('Response bukan JSON: ' + text.substring(0, 100));
+                    });
+                }
+            })
+            .then(result => {
+                if (result.status >= 200 && result.status < 300) {
+                    alert(result.data.message || 'Pembayaran berhasil dikonfirmasi!');
+                    closeBuktiModal();
+                    location.reload();
+                } else {
+                    throw new Error(result.data.message || 'Gagal mengkonfirmasi pembayaran');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Gagal mengkonfirmasi pembayaran: ' + error.message);
+            });
         }
     }
 
-    // Close modal saat klik di luar
     document.getElementById('buktiModal').addEventListener('click', function(e) {
         if (e.target === this) {
             closeBuktiModal();

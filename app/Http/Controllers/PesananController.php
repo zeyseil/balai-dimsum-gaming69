@@ -92,11 +92,12 @@ class PesananController extends Controller
 
             Log::info('Pesanan berhasil disimpan', [
                 'pelanggan_id' => $pelanggan->id,
+                'pesanan_id' => $pesanan->id,
                 'total_items' => count($orders)
             ]);
 
-            // Redirect dengan pesan sukses
-            return redirect()->route('menu')
+            // Redirect ke halaman checkout
+            return redirect('/checkout/' . $pesanan->id)
                 ->with('success', 'Pesanan berhasil disimpan!');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
