@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pelanggan;
 use App\Models\Pesanan;
 use App\Models\DetailPesanan;
+use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -47,6 +48,23 @@ class PesananController extends Controller
                 if (!isset($order['item_id']) || !isset($order['quantity']) || !isset($order['subtotal'])) {
                     Log::warning('Invalid order item', ['order' => $order]);
                     continue; // Skip item yang tidak valid
+                }
+
+                // Ambil data menu
+                $menu = Menu::find($order['item_id']);
+                if (!$menu) {
+                    Log::warning('Menu tidak ditemukan', ['menu_id' => $order['item_id']]);
+                    continue;
+                }
+
+                // Cek dan kurangi stock
+                if (!$menu->kurangiStock($order['quantity'])) {
+                    Log::warning('Stock tidak cukup', [
+                        'menu_id' => $order['item_id'],
+                        'stock_tersedia' => $menu->stock,
+                        'jumlah_pesanan' => $order['quantity']
+                    ]);
+                    throw new \Exception("Stock menu '{$menu->nama_menu}' tidak cukup. Tersedia: {$menu->stock}, Diminta: {$order['quantity']}");
                 }
                 
                 // Simpan data pesanan

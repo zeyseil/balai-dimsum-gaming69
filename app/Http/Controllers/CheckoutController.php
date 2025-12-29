@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\pelanggan;
 use App\Models\Pesanan;
 use App\Models\DetailPesanan;
+use App\Models\Menu;
 use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
     public function store(Request $request)
     {
-        DB::transaction(function () use ($request) {
-
+        try {
             $request->validate([
                 'orders' => 'required|array',
                 'orders.*.item_id' => 'required|integer',
@@ -24,6 +24,8 @@ class CheckoutController extends Controller
                 'orders.*.notes' => 'nullable|string',
                 'total_harga' => 'required|numeric'
             ]);
+
+            DB::beginTransaction();
 
             $pelanggan = pelanggan::create([
                 'nama'    => $request->nama,
@@ -39,6 +41,17 @@ class CheckoutController extends Controller
             ]);
 
             foreach ($request->orders as $order) {
+                // Ambil data menu
+                $menu = Menu::find($order['item_id']);
+                if (!$menu) {
+                    throw new \Exception("Menu dengan ID {$order['item_id']} tidak ditemukan");
+                }
+
+                // Cek dan kurangi stock
+                if (!$menu->kurangiStock($order['quantity'])) {
+                    throw new \Exception("Stock menu '{$menu->nama_menu}' tidak cukup. Tersedia: {$menu->stock}, Diminta: {$order['quantity']}");
+                }
+
                 DetailPesanan::create([
                     'pesanan_id' => $pesanan->id,
                     'menu_id' =>  $order['item_id'],
@@ -48,9 +61,14 @@ class CheckoutController extends Controller
                     'keterangan' => $order['notes'] ?? null,
                 ]);
             }
-                        
-        });
 
-        return redirect()->back()->with('success', 'Pesanan berhasil dibuat');
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Pesanan berhasil dibuat');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 }
