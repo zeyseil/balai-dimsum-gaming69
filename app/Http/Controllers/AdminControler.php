@@ -6,6 +6,7 @@ Use App\Models\DetailPesanan;
 Use App\Models\Pesanan;
 Use App\Models\Pelanggan;
 Use App\Models\Menu;
+Use App\Models\Pembayaran;
 use Illuminate\Http\Request;
 
 class AdminControler extends Controller
@@ -115,7 +116,7 @@ class AdminControler extends Controller
         $pelanggan = Pelanggan::all();
         $pesanan = Pesanan::all();
         
-        $query = DetailPesanan::with('pesanan.pelanggan', 'pesanan.menu');
+        $query = DetailPesanan::with('pesanan.pelanggan', 'pesanan.menu', 'pesanan.pembayaran');
         
         // Search berdasarkan nama pelanggan, alamat, atau menu
         if ($request->filled('search')) {
@@ -170,6 +171,22 @@ class AdminControler extends Controller
             return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui menjadi ' . $nextStatus);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal memperbarui status pesanan: ' . $e->getMessage());
+        }
+    }
+
+    public function confirmPembayaran($pembayaran_id)
+    {
+        try {
+            $pembayaran = Pembayaran::findOrFail($pembayaran_id);
+            
+            $pembayaran->update([
+                'status_pembayaran' => 'dibayar',
+                'tanggal_pembayaran' => now()
+            ]);
+            
+            return redirect()->back()->with('success', 'Pembayaran telah dikonfirmasi dan status diubah menjadi Dibayar');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal mengonfirmasi pembayaran: ' . $e->getMessage());
         }
     }
 

@@ -34,4 +34,9 @@ class Pesanan extends Model
     {
         return $this->hasMany(DetailPesanan::class);
     }
+
+    public function pembayaran()
+    {
+        return $this->hasOne(Pembayaran::class);
+    }
 }

@@ -62,6 +62,7 @@ Route::middleware('admin')->group(function () {
     });
     Route::get('/pesanan', [AdminControler::class, 'view'])->name('admin.pesanan');
     Route::patch('/pesanan/{pesanan_id}/update-status', [AdminControler::class, 'updatePesananStatus'])->name('pesanan.updateStatus');
+    Route::patch('/pembayaran/{pembayaran_id}/confirm', [AdminControler::class, 'confirmPembayaran'])->name('pembayaran.confirm');
     Route::get('/create', function(){
         return view('admin.buat');
     });
