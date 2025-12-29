@@ -4,24 +4,34 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pembayaran;
+use App\Models\Pelanggan;
 use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
     public function index($pesanan_id)
     {
+        // Ambil pesanan beserta relasi pelanggan
         $pesanan = \App\Models\Pesanan::with(['detailPesanan.menu', 'pelanggan'])->find($pesanan_id);
+        
         if (!$pesanan) {
             return redirect()->back()->with('error', 'Pesanan tidak ditemukan');
         }
+    
         $detailPesanan = $pesanan->detailPesanan;
+        $pelanggan = $pesanan->pelanggan; // Ambil pelanggan dari relasi
+    
+        if (!$pelanggan) {
+            return redirect()->back()->with('error', 'Data pelanggan tidak ditemukan');
+        }
+    
         return view('checkout', [
             'pesanan_id' => $pesanan_id,
             'pesanan' => $pesanan,
-            'detailPesanan' => $detailPesanan
+            'detailPesanan' => $detailPesanan,
+            'pelanggan' => $pelanggan
         ]);
     }
-
 
     public function store(Request $request)
     {

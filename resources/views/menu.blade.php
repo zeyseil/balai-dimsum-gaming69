@@ -223,7 +223,7 @@
     color: #fff;
     cursor: pointer;
 }
-</style>
+    </style>
 
 </head>
 
@@ -232,26 +232,26 @@
 let currentQty = 1; // jumlah stok default
 let selectedType = 'reguler'; // tipe menu default
 
-function tampilkanDialog(id, name, image, price) {
-    console.log('Dialog dibuka:', id, name, image, price); // debug ketika pop up terbuka
+function tampilkanDialog(id, name, image, price_reguler, price_mini) {
+    console.log('Dialog dibuka:', id, name, image, price_reguler, price_mini ); // debug ketika pop up terbuka
     
     currentItem = { // penginputan dari database menjadi variable berikut:
         id: id,
         name: name,
         image: image,
-        price: price,
-        currentPrice: price
+        price: [price_reguler, price_mini], // Array [reguler, mini]
+        currentPrice: price_reguler // Default ke harga reguler
     };
     currentQty = 1;
-    selectedType = 'reguler';
+    selectedType = 'reguler'; // default option
     
     // Update setiap konten yang terdapat pada dialog(pop up) dengan data item
-    document.getElementById('dialog-image').src = image; // berupa gambar dari database
-    document.getElementById('dialog-image').alt = name; // alternatif dari gambar
-    document.getElementById('dialog-name').textContent = 'Dimsum ' + name + ' isi 5'; // nama menu
-    document.getElementById('dialog-price').textContent = 'Rp ' + formatRupiah(price); // format harga
-    document.getElementById('qty-number').textContent = currentQty; // jumlah item yang akan di beli
-    document.getElementById('dialog-notes').value = ''; //catatan pesanan
+    document.getElementById('dialog-image').src = image;
+    document.getElementById('dialog-image').alt = name;
+    document.getElementById('dialog-name').textContent = 'Dimsum ' + name + ' isi 5';
+    document.getElementById('dialog-price').textContent = 'Rp ' + formatRupiah(price_reguler); // Tampilkan harga reguler(defaultnya)
+    document.getElementById('qty-number').textContent = currentQty;
+    document.getElementById('dialog-notes').value = '';
     
     // menu tombol tipe menu agar bisa di toggle(active).
     document.querySelectorAll('.opt-btn').forEach(btn => {
@@ -262,7 +262,7 @@ function tampilkanDialog(id, name, image, price) {
     });
     
     const dialog = document.getElementById('kotak-dialog');
-    dialog.showModal(); // menyambungkan class dialog agar bisa terhubung dengan javascript
+    dialog.showModal();
 }
 
 // function menyembunyikan pop up dialog
@@ -283,10 +283,12 @@ function ubahJumlah(delta) {
 function updateHargaDialog() {
     if (!currentItem) return;
     
-    // Mini = 70% (0.7) dari harga reguler (ubah 0.7 sesuai dengan yang dibutuhkan)
-    let hargaAkhir = currentItem.price;
+    // Ambil harga berdasarkan tipe yang dipilih
+    let hargaAkhir;
     if (selectedType === 'mini') {
-        hargaAkhir = Math.floor(currentItem.price * 0.7);
+        hargaAkhir = currentItem.price[1]; // price_mini
+    } else {
+        hargaAkhir = currentItem.price[0]; // price_reguler
     }
     
     // Update tampilan harga setiap mengubah tipe pesanan
@@ -398,6 +400,9 @@ function tambahKePesanan(orderData) {
     orderItem.dataset.quantity = String(orderData.quantity);
     orderItem.dataset.subtotal = String(orderData.subtotal);
     orderItem.dataset.notes = String(orderData.notes || '');
+    orderItem.dataset.priceReguler = String(orderData.item.price[0]); // Simpan harga reguler
+    orderItem.dataset.priceMini = String(orderData.item.price[1]); // Simpan harga mini
+
 
     orderItem.dataset.subtotal = orderData.subtotal;
     orderItem.style.cssText = 'padding: 3px; border-bottom: 1px solid #E5E7EB; position: relative; cursor: pointer;';
@@ -434,7 +439,9 @@ function tambahKePesanan(orderData) {
     
     orderItem.addEventListener('click', (e) => {
         if (!e.target.classList.contains('delete-order-btn')) {
-            tampilkanDialog(orderData.item.id, orderData.item.name, orderData.item.image, orderData.item.price);
+            const priceReguler = parseFloat(orderItem.dataset.priceReguler);
+            const priceMini = parseFloat(orderItem.dataset.priceMini);
+            tampilkanDialog(orderData.item.id, orderData.item.name, orderData.item.image, priceReguler, priceMini);
         }
     });
     
@@ -530,7 +537,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="menu-item" style="box-sizing: border-box;">
                             <div class="menu-image"><img src="{{  asset(path:'storage/' . $item-> foto_menu) }}"></div>
                             <div class="menu-name">{{ $item->nama_menu }}</div>
-                            <button class="menu-btn" onclick="tampilkanDialog({{ $item->id }}, '{{ $item->nama_menu }}', '{{ asset(path:'storage/' . $item-> foto_menu) }}', {{ $item->harga_menu ?? 0 }})">Tambahkan</button> 
+                            <button class="menu-btn" onclick="tampilkanDialog('{{ $item->id }}', '{{ $item->nama_menu }}', '{{ asset(path:'storage/' . $item-> foto_menu) }}', '{{ $item->harga_reguler ?? 0 }}', '{{ $item->harga_mini ?? 0}}')">Tambahkan</button> 
                         </div>  @endforeach   
                     </div>
                 </div>

@@ -39,7 +39,7 @@ Route::get('/popup', function () {
 Route::get('/checkout', function () {
     return view('checkout');
 });
-Route::get('/checkout/{pesanan_id}', [PaymentController::class, 'index']);
+Route::get('/checkout/{pelanggan_id}', [PaymentController::class, 'index']);
 
 Route::post('/pembayaran/store', [PaymentController::class, 'store'])
     ->name('pembayaran.store');
