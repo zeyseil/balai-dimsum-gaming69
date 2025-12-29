@@ -12,8 +12,103 @@ class AdminControler extends Controller
 {
     public function index()
     {
-        $saran = Saran::all();
-        return view('admin.dashboard', compact('saran'));
+        // Pendapatan kemarin
+        $yesterday = now()->subDay();
+        $pendapatanKemarin = Pesanan::whereDate('created_at', $yesterday->toDateString())
+            ->sum('total_harga');
+
+        // Pendapatan hari ini
+        $today = now();
+        $pendapatanHariIni = Pesanan::whereDate('created_at', $today->toDateString())
+            ->sum('total_harga');
+
+        // Persentase perubahan pendapatan
+        $perubahanPendapatan = $pendapatanKemarin > 0 
+            ? (($pendapatanHariIni - $pendapatanKemarin) / $pendapatanKemarin) * 100 
+            : 0;
+
+        // Total pesanan hari ini
+        $totalPesananHariIni = Pesanan::whereDate('created_at', $today->toDateString())->count();
+        
+        // Total pesanan kemarin
+        $totalPesananKemarin = Pesanan::whereDate('created_at', $yesterday->toDateString())->count();
+        
+        $perubahanPesanan = $totalPesananKemarin > 0 
+            ? (($totalPesananHariIni - $totalPesananKemarin) / $totalPesananKemarin) * 100 
+            : 0;
+
+        // Data status pesanan untuk chart
+        $statusPending = Pesanan::where('status_pesanan', 'pending')->count();
+        $statusDikonfirmasi = Pesanan::where('status_pesanan', 'dikonfirmasi')->count();
+        $statusDiantar = Pesanan::where('status_pesanan', 'diantar')->count();
+        $statusSelesai = Pesanan::where('status_pesanan', 'selesai')->count();
+        
+        $totalPesananSemuanya = $statusPending + $statusDikonfirmasi + $statusDiantar + $statusSelesai;
+        
+        // Normalisasi tinggi chart untuk status pesanan (skala 0-300px)
+        $statusData = [
+            'pending' => $statusPending,
+            'dikonfirmasi' => $statusDikonfirmasi,
+            'diantar' => $statusDiantar,
+            'selesai' => $statusSelesai,
+        ];
+        
+        $maxStatus = max($statusData) ?? 1;
+        $chartStatusHeights = [];
+        foreach ($statusData as $status => $count) {
+            if ($maxStatus > 0) {
+                $height = ($count / $maxStatus) * 300;
+            } else {
+                $height = 0;
+            }
+            $chartStatusHeights[$status] = $height;
+        }
+
+        // Total pelanggan
+        $totalPelanggan = Pelanggan::count();
+        
+        // Total menu aktif
+        $totalMenu = Menu::count();
+        
+        // Total pesanan bulan ini
+        $totalPesananBulanIni = Pesanan::whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
+
+        // Pesanan terbaru (Latest 5)
+        $pesananTerbaru = Pesanan::with('pelanggan', 'menu')
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        // Total pendapatan bulan ini
+        $pendapatanBulanan = Pesanan::whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->sum('total_harga');
+
+        // Saran terbaru
+        $saran = Saran::orderBy('created_at', 'desc')->limit(5)->get();
+
+        return view('admin.dashboard', compact(
+            'pendapatanKemarin',
+            'pendapatanHariIni',
+            'perubahanPendapatan',
+            'totalPesananHariIni',
+            'totalPesananKemarin',
+            'perubahanPesanan',
+            'statusPending',
+            'statusDikonfirmasi',
+            'statusDiantar',
+            'statusSelesai',
+            'totalPesananSemuanya',
+            'chartStatusHeights',
+            'totalPelanggan',
+            'totalMenu',
+            'totalPesananBulanIni',
+            'pesananTerbaru',
+            'pendapatanBulanan',
+            'saran'
+        ));
     }
     public function view(Request $request){
         $menu = Menu::all();
@@ -43,7 +138,8 @@ class AdminControler extends Controller
             });
         }
         
-        $detail_pesanan = $query->get();
+        // Urutkan dari pesanan terbaru ke terlama
+        $detail_pesanan = $query->orderBy('created_at', 'desc')->get();
         $searchQuery = $request->input('search') ?? '';
         $statusFilter = $request->input('status') ?? '';
         
