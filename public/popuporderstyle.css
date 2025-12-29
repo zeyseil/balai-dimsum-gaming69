@@ -1,0 +1,210 @@
+.checkout-modal {
+    position: fixed;       /* 50% dari kiri */  
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    border: none;
+    padding: 0;
+    border-radius: 20px;
+    left: 40%;
+    top: 20%;
+}
+
+#checkout-modal:hover{
+    box-shadow: 0 20px 50px rgba(255, 255, 255, 0.25);
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.checkout-modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.checkout-content {
+    background: #fff;
+    width: 400px;
+    padding: 25px;
+    animation: scaleIn .3s ease;
+    border : none;
+    outline: none;
+}
+
+.checkout-header {
+    text-align: center;
+    color: #b91c1c;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.order-summary {
+    background-color: #F3F4F6;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.order-summary-title {
+    text-align: center;
+    color: #b91c1c;
+    margin-bottom: 15px;
+}
+
+.order-item-summary {
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 5px;
+}
+
+.total-summary {
+    font-size: 18px;
+    font-weight: bold;
+    color: #EF4444;
+    text-align: right;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 2px solid #E5E7EB;
+}
+
+.checkout-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-submit,
+.btn-cancel {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-submit {
+    background-color: #EF4444;
+    color: white;
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(239, 68, 68, 0.45);
+    background: linear-gradient(135deg, #DC2626, #B91C1C);
+}
+
+.btn-submit:disabled {
+    background-color: #9CA3AF;
+    cursor: not-allowed;
+}
+
+.btn-submit,.btn-cancel:active {
+    transform: scale(0.97);
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.35);
+}
+
+.btn-submit,.btn-cancel:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+}
+
+.btn-cancel {
+    background-color: #E5E7EB;
+    color: #374151;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+    transform: translateY(-2px);
+    background-color: #D1D5DB;
+    box-shadow: 0 10px 22px rgba(239, 68, 68, 0.45);
+}
+/* === POPUP PEMBAYARAN === */
+#popup-pembayaran {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+#popup-pembayaran * {
+    all: unset;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+#popup-pembayaran .popup-box {
+    all: unset;
+    background: #ffffff;
+    padding: 24px 28px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+#popup-pembayaran .popup-box h3 {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+#popup-pembayaran .popup-box p {
+    display: block;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+#popup-pembayaran .popup-box button {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 22px;
+    border-radius: 4px;
+    background: #111;
+    color: #fff;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+}
