@@ -11,6 +11,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\SaranController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PesananController;
+use App\Http\Controllers\PaymentController;
 
 Route::get('/', function () {
     return view('/home');
@@ -38,6 +39,10 @@ Route::get('/popup', function () {
 Route::get('/checkout', function () {
     return view('checkout');
 });
+Route::get('/checkout/{pesanan_id}', [PaymentController::class, 'index']);
+
+Route::post('/pembayaran/store', [PaymentController::class, 'store'])
+    ->name('pembayaran.store');
 
 
 // Route::post('/checkout', [CheckoutController::class, 'store'])

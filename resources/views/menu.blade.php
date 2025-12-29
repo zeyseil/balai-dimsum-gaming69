@@ -173,6 +173,56 @@
     background-color: #D1D5DB;
     box-shadow: 0 10px 22px rgba(239, 68, 68, 0.45);
 }
+/* === POPUP PEMBAYARAN === */
+#popup-pembayaran {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+#popup-pembayaran * {
+    all: unset;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+#popup-pembayaran .popup-box {
+    all: unset;
+    background: #ffffff;
+    padding: 24px 28px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+#popup-pembayaran .popup-box h3 {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+#popup-pembayaran .popup-box p {
+    display: block;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+#popup-pembayaran .popup-box button {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 22px;
+    border-radius: 4px;
+    background: #111;
+    color: #fff;
+    cursor: pointer;
+}
 </style>
 
 </head>
@@ -690,6 +740,24 @@ document.getElementById('checkout-modal').addEventListener('click', function(eve
     }
 });
 </script>
+
+@if (session('pesanan_dikirim'))
+    <div id="popup-pembayaran">
+        <div class="popup-box">
+            <h3>Pesanan Berhasil</h3>
+            <p>Pesanan kamu sudah dikirim dan menunggu verifikasi.</p>
+            <button type="button" onclick="closePopupPembayaran()">OK</button>
+        </div>
+    </div>
+@endif
+
+<script>
+function closePopupPembayaran() {
+    const popup = document.getElementById('popup-pembayaran');
+    if (popup) popup.style.display = 'none';
+}
+</script>
+
 
 </body>
 
