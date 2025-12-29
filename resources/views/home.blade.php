@@ -6,6 +6,11 @@
     <title>Balai Dimsum</title>
     <link rel="stylesheet" href="{{ asset('style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Jua&display=swap" rel="stylesheet">
+    <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -68,9 +73,10 @@
                     <div class="card-text">
                         Nikmati kelezatan dimsum mentai kami yang dibuat dengan bahan-bahan segar dan berkualitas. Setiap gigitan memberikan sensasi rasa yang memanjakan lidah.
                     </div>
-                    <a href="/menu" class="card-button">
-                        <span>Pesan Sekarang</span>
-                    </a>
+                    <a href="/menu">
+                    <div class="card-button">
+                        <span >Pesan Sekarang</span>
+                    </div></a>
                 </div>
 
                 <div class="card">
@@ -80,10 +86,10 @@
                         Kunjungi kami di BANDUNG TIMUR, Jl. Pasir Impun No. 28. Lokasi strategis dan mudah dijangkau untuk menikmati dimsum favorit Anda.
                     </div>
                     <a href="https://maps.app.goo.gl/uKkpyGTYmCJcB38RA"
-                        target="_blank"
-                        class="card-button">
+                        target="_blank">
+                       <div class="card-button">
                         <span>Baca Selengkapnya</span>
-                    </a>
+                    </div></a>
                 </div>
 
                 <div class="card">
@@ -92,9 +98,9 @@
                     <div class="card-text">
                         Lihat berbagai foto produk dan momen spesial kami. Dari proses pembuatan hingga penyajian dimsum yang menggugah selera.
                     </div>
-                    <a href="/galeri" class="card-button">
+                    <a href="/galeri"><div class="card-button">
                         <span>Baca Selengkapnya</span>
-                    </a>
+                    </div></a>
                 </div>
             </div>
         </div>
