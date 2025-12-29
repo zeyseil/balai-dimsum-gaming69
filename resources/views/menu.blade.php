@@ -10,11 +10,6 @@
     <link rel="stylesheet" href="style1.css">
     <style>
         <style>
-       
-a {
-    text-decoration: none;
-}
-   
 .checkout-modal {
     
     position: fixed;
@@ -226,6 +221,10 @@ a {
     background: #111;
     color: #fff;
     cursor: pointer;
+}
+
+        a {
+    text-decoration: none;
 }
     </style>
 
