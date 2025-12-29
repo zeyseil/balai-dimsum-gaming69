@@ -11,6 +11,8 @@ class Menu extends Model
     protected $fillable = [
         'nama_menu',
         'harga_menu',
+        'harga_reguler',
+        'harga_mini',
         'foto_menu',
         'kategori',
         'stock'

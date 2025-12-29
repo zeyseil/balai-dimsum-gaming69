@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nama_menu');
             $table->decimal('harga_menu',10,2);
+            $table->decimal('harga_reguler',10,2);
+            $table->decimal('harga_mini',10,2);
             $table->string('foto_menu')->nullable();
             $table->string('kategori');
             $table->integer('stock')->default(0);
