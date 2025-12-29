@@ -56,13 +56,12 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // ===== ADMIN ROUTES - PROTECTED BY MIDDLEWARE =====
 Route::middleware('admin')->group(function () {
     Route::get('/admin', [AdminControler::class, 'index']);
-    Route::get('/penjualan', function(){
-        return view('admin.penjualan');
-    });
+    Route::get('/penjualan', [AdminControler::class, 'penjualan']);
     Route::get('/stock', function(){
         return view('admin.stock');
     });
     Route::get('/pesanan', [AdminControler::class, 'view'])->name('admin.pesanan');
+    Route::patch('/pesanan/{pesanan_id}/update-status', [AdminControler::class, 'updatePesananStatus'])->name('pesanan.updateStatus');
     Route::get('/create', function(){
         return view('admin.buat');
     });

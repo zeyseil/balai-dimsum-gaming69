@@ -4,19 +4,19 @@
                     <div class="bd-kartu-stat">
                         <div class="bd-kartu-stat__header">
                             <div class="bd-kartu-stat__ikon"><img src="img/mny.png"" alt=""></div>
-                            <div class="bd-kartu-stat__perubahan bd-kartu-stat__perubahan--positif">↑ 40%</div>
+                            <div class="bd-kartu-stat__perubahan {{ $pendapatanKemarin >= $pendapatanHariIni ? 'bd-kartu-stat__perubahan--positif' : 'bd-kartu-stat__perubahan--negatif' }}">{{ $pendapatanKemarin >= $pendapatanHariIni ? '↑' : '↓' }} {{ abs(round($perubahan, 1)) }}%</div>
                         </div>
                         <div class="bd-kartu-stat__label">Pendapatan Kemarin</div>
-                        <div class="bd-kartu-stat__nilai">IDR. 500.000</div>
+                        <div class="bd-kartu-stat__nilai">IDR. {{ number_format($pendapatanKemarin, 0, ',', '.') }}</div>
                     </div>
 
                     <div class="bd-kartu-stat">
                         <div class="bd-kartu-stat__header">
                             <div class="bd-kartu-stat__ikon"><img src="img/mny.png"" alt=""></div>
-                            <div class="bd-kartu-stat__perubahan bd-kartu-stat__perubahan--negatif">↓ 20%</div>
+                            <div class="bd-kartu-stat__perubahan {{ $pendapatanHariIni >= $pendapatanKemarin ? 'bd-kartu-stat__perubahan--positif' : 'bd-kartu-stat__perubahan--negatif' }}">{{ $pendapatanHariIni >= $pendapatanKemarin ? '↑' : '↓' }} {{ abs(round($perubahan, 1)) }}%</div>
                         </div>
                         <div class="bd-kartu-stat__label">Pendapatan Hari Ini</div>
-                        <div class="bd-kartu-stat__nilai">IDR. 100.000</div>
+                        <div class="bd-kartu-stat__nilai">IDR. {{ number_format($pendapatanHariIni, 0, ',', '.') }}</div>
                     </div>
                 </div>
 
@@ -24,71 +24,35 @@
                 <div class="bd-bagan">
                     <div class="bd-bagan__judul">Penjualan Bulanan</div>
                     <div class="bd-bagan__wadah">
+                        @php
+                            $bulanNama = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                        @endphp
+                        @foreach($chartHeights as $key => $height)
                         <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                            <div class="bd-batang" style="height: 100px;"></div>
-                            <span class="bd-batang__label">Jan</span>
+                            <div class="bd-batang" style="height: {{ $height }}px;"></div>
+                            <span class="bd-batang__label">{{ $bulanNama[$key] }}</span>
                         </div>
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                            <div class="bd-batang" style="height: 233px;"></div>
-                            <span class="bd-batang__label">Feb</span>
-                        </div>
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                            <div class="bd-batang" style="height: 133px;"></div>
-                            <span class="bd-batang__label">Mar</span>
-                        </div>
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                            <div class="bd-batang" style="height: 200px;"></div>
-                            <span class="bd-batang__label">Apr</span>
-                        </div>
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                            <div class="bd-batang" style="height: 113px;"></div>
-                            <span class="bd-batang__label">May</span>
-                        </div>
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                            <div class="bd-batang" style="height: 120px;"></div>
-                            <span class="bd-batang__label">Jun</span>
-                        </div>
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                            <div class="bd-batang" style="height: 187px;"></div>
-                            <span class="bd-batang__label">Jul</span>
-                        </div>
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                            <div class="bd-batang" style="height: 73px;"></div>
-                            <span class="bd-batang__label">Aug</span>
-                        </div>
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                            <div class="bd-batang" style="height: 127px;"></div>
-                            <span class="bd-batang__label">Sep</span>
-                        </div>
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                            <div class="bd-batang" style="height: 253px;"></div>
-                            <span class="bd-batang__label">Oct</span>
-                        </div>
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                            <div class="bd-batang" style="height: 187px;"></div>
-                            <span class="bd-batang__label">Nov</span>
-                        </div>
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px;">
-                            <div class="bd-batang" style="height: 67px;"></div>
-                            <span class="bd-batang__label">Dec</span>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
 
                 <!-- BOTTOM STATS -->
                 <div class="bd-grid-bawah">
+                    @forelse($menuTerlaris as $item)
                     <div class="bd-kartu-info">
-                        <div class="bd-kartu-info__label">Dimsum</div>
-                        <div class="bd-kartu-info__angka">90 qty</div>
+                        <div class="bd-kartu-info__label">{{ $item->menu->nama_menu ?? 'N/A' }}</div>
+                        <div class="bd-kartu-info__angka">{{ $item->total_penjualan }} qty</div>
                     </div>
+                    @empty
                     <div class="bd-kartu-info">
-                        <div class="bd-kartu-info__label">Saus Mentai</div>
-                        <div class="bd-kartu-info__angka">1 kg</div>
+                        <div class="bd-kartu-info__label">Belum Ada Penjualan</div>
+                        <div class="bd-kartu-info__angka">0 qty</div>
                     </div>
+                    @endforelse
                     <div class="bd-kartu-info">
-                        <div class="bd-kartu-info__label">Pendapat Bulanan</div>
-                        <div class="bd-kartu-info__angka" style="color: var(--warna-biru);">IDR. 5M</div>
-                        <div class="bd-kartu-info__persentase">↑ 10%</div>
+                        <div class="bd-kartu-info__label">Pendapatan Bulanan</div>
+                        <div class="bd-kartu-info__angka" style="color: var(--warna-biru);">IDR. {{ number_format($pendapatanBulanan / 1000000, 1) }}M</div>
+                        <div class="bd-kartu-info__persentase">↑ {{ abs(round($perubahan, 1)) }}%</div>
                     </div>
                 </div>
 
@@ -99,18 +63,28 @@
                         <thead>
                             <tr>
                                 <th class="bd-tabel__header" style="width: 35%;">Nama</th>
-                                <th class="bd-tabel__header" style="width: 25%;">Menu</th>
+                                <th class="bd-tabel__header" style="width: 25%;">Total Harga</th>
                                 <th class="bd-tabel__header" style="width: 25%;">Status</th>
                                 <th class="bd-tabel__header" style="width: 15%;">Waktu</th>
                             </tr>
                         </thead>
-                        <tbodyA>
+                        <tbody>
+                            @forelse($pesananTerbaru as $pesanan)
                             <tr class="bd-tabel__baris">
-                                <td class="bd-tabel__data">Asep knalpot</td>
-                                <td class="bd-tabel__data">NS4</td>
-                                <td class="bd-tabel__data"><span class="bd-status bd-status--diantar">Diantar</span></td>
-                                <td class="bd-tabel__data">14:30</td>
+                                <td class="bd-tabel__data">{{ $pesanan->pelanggan->nama ?? 'N/A' }}</td>
+                                <td class="bd-tabel__data">IDR. {{ number_format($pesanan->total_harga, 0, ',', '.') }}</td>
+                                <td class="bd-tabel__data">
+                                    <span class="bd-status {{ $pesanan->status_pesanan == 'pending' ? 'bd-status--pending' : ($pesanan->status_pesanan == 'confirmed' ? 'bd-status--confirmed' : 'bd-status--diantar') }}">
+                                        {{ ucfirst($pesanan->status_pesanan) }}
+                                    </span>
+                                </td>
+                                <td class="bd-tabel__data">{{ $pesanan->created_at->format('H:i') }}</td>
                             </tr>
+                            @empty
+                            <tr class="bd-tabel__baris">
+                                <td class="bd-tabel__data" colspan="4" style="text-align: center;">Belum ada pesanan</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
