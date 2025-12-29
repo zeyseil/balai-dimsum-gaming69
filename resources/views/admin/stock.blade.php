@@ -29,7 +29,8 @@
             @forelse($menu as $m)
             <tr class="bd-tabel__baris">
                 <td class="bd-tabel__data">{{ $m->nama_menu }}</td>
-                <td class="bd-tabel__data">Rp {{ number_format($m->harga_menu, 0, ',', '.') }}</td>
+                <td class="bd-tabel__data">Rp {{ number_format($m->harga_reguler, 0, ',', '.') }}</td>
+                <td class="bd-tabel__data">Rp {{ number_format($m->harga_mini, 0, ',', '.') }}</td>
                 <td class="bd-tabel__data">{{ $m->kategori }}</td>
                 <td class="bd-tabel__data"><span style="background-color: #007bff; color: white; padding: 4px 8px; border-radius: 3px;">{{ $m->stock }}</span></td>
                 <td class="bd-tabel__data">

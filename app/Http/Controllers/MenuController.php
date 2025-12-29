@@ -29,7 +29,9 @@ class MenuController extends Controller
     {
         $validatedData = $request->validate([
             'nama_menu' => 'required|string|max:255',
-            'harga_menu' => 'required|numeric',
+            // 'harga_menu' => 'required|numeric',
+            'harga_reguler' => 'required|numeric',
+            'harga_mini' => 'required|numeric',
             'foto_menu' => 'required|image',
             'kategori' => 'required|string|max:100',
             'stock' => 'required|integer',
@@ -40,7 +42,9 @@ class MenuController extends Controller
     }
     Menu::create([
         'nama_menu' => $request->nama_menu,
-        'harga_menu' => $request->harga_menu,
+        // 'harga_menu' => $request->harga_menu,
+        'harga_reguler' => $request->harga_reguler,
+        'harga_mini' => $request->harga_mini,
         'foto_menu' => $foto,
         'kategori' => $request->kategori,
         'stock' => $request->stock,
@@ -64,7 +68,9 @@ class MenuController extends Controller
     {
         $validatedData = $request->validate([
             'nama_menu' => 'required|string|max:255',
-            'harga_menu' => 'required|numeric',
+            // 'harga_menu' => 'required|numeric',
+            'harga_reguler' => 'required|numeric',
+            'harga_mini' => 'required|numeric',
             'foto_menu' => 'nullable|image',
             'kategori' => 'required|string|max:100',
             'stock' => 'required|integer',
