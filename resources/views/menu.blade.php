@@ -640,7 +640,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
 
         <!-- Content Cards -->
-        <div class="content-section">
+         <div class="content-section">
             <div class="cards-container">
                 <div class="card">
                     <div class="card-header">FOOD</div>
@@ -648,9 +648,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="card-text">
                         Nikmati kelezatan dimsum mentai kami yang dibuat dengan bahan-bahan segar dan berkualitas. Setiap gigitan memberikan sensasi rasa yang memanjakan lidah.
                     </div>
-                    <div class="card-button">
+                    <a href="/menu" class="card-button">
                         <span>Pesan Sekarang</span>
-                    </div>
+                    </a>
                 </div>
 
                 <div class="card">
@@ -659,9 +659,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="card-text">
                         Kunjungi kami di BANDUNG TIMUR, Jl. Pasir Impun No. 28. Lokasi strategis dan mudah dijangkau untuk menikmati dimsum favorit Anda.
                     </div>
-                    <div class="card-button">
+                    <a href="https://maps.app.goo.gl/uKkpyGTYmCJcB38RA"
+                        target="_blank"
+                        class="card-button">
                         <span>Baca Selengkapnya</span>
-                    </div>
+                    </a>
                 </div>
 
                 <div class="card">
@@ -670,20 +672,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="card-text">
                         Lihat berbagai foto produk dan momen spesial kami. Dari proses pembuatan hingga penyajian dimsum yang menggugah selera.
                     </div>
-                    <div class="card-button">
+                    <a href="/galeri" class="card-button">
                         <span>Baca Selengkapnya</span>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
 
         <!-- Footer -->
-        <div class="footer">
-            <h3>Footer</h3>
-            <div class="footer-bottom">
+        <div class="footer-bottom">
                 <div class="copyright">Copyright 2025. All rights reserved.</div>
                 <div class="footer-strip"></div>
-            </div>
         </div>
     </div>
     <script>
