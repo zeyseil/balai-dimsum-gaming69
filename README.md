@@ -1,6 +1,6 @@
 ## Cara konfigurasi
 
-> [WAJIB]
+> [!WAJIB]
 > **Konfigurasi:** clone repository, jalankan 'composer install', copy file .env.example menjadi .env, jangan lupa masukan perintah php artisan migrate untuk ngeintregasikan database, terakhir di .env nya konfigurasi disesuaikan seperti berikut:
 
 ``` 
