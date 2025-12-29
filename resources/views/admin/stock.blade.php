@@ -18,7 +18,8 @@
         <thead>
             <tr>
                 <th class="bd-tabel__header" style="width: 15%;">Nama Menu</th>
-                <th class="bd-tabel__header" style="width: 12%;">Harga</th>
+                <th class="bd-tabel__header" style="width: 12%;">Harga Reguler</th>
+                <th class="bd-tabel__header" style="width: 12%;">Harga Mini</th>
                 <th class="bd-tabel__header" style="width: 12%;">Kategori</th>
                 <th class="bd-tabel__header" style="width: 8%;">Stock</th>
                 <th class="bd-tabel__header" style="width: 15%;">Foto</th>
