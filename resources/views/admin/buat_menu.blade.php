@@ -29,15 +29,19 @@
             </select>
         </div>
         <div class="mb-3">
-            <label for="harga_menu" class="form-label">Harga</label>
-            <input type="number" step="0.01" class="form-control" id="harga_menu" name="harga_menu" value="masukan harga" required>
+            <label for="harga_reguler" class="form-label">Harga Reguler</label>
+            <input type="number" step="0.01" class="form-control" id="harga_reguler" name="harga_reguler" value="masukan harga reguler" required>
+        </div>
+        <div class="mb-3">
+            <label for="harga_mini" class="form-label">Harga Mini</label>
+            <input type="number" step="0.01" class="form-control" id="harga_mini" name="harga_mini" value="masukan harga mini" required>
         </div>
             <div class="mb-3">
             <label for="foto_menu" class="form-label">Foto Menu</label>
             <input type="file" class="form-control" id="foto_menu" name="foto_menu" required>
         </div>
         <button type="submit" class="btn btn-success">Simpan Produk</button>
-        <a href="#" class="btn btn-secondary">Batal</a>
+        <a href="/admin" class="btn btn-secondary">Batal</a>
     </form>
 </body>
 </html>

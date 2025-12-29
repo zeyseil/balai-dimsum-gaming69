@@ -30,9 +30,17 @@
             </select>
             {{-- <textarea class="form-control" id="kategori" name="kategori" rows="3" value="{{ $menu->kategori }}"> {{ $menu->kategori }}</textarea> --}}
         </div>
-        <div class="mb-3">
+        {{-- <div class="mb-3">
             <label for="harga_menu" class="form-label">Harga</label>
             <input type="number" step="0.01" class="form-control" id="harga_menu" name="harga_menu" value="{{ $menu->harga_menu }}" >
+        </div> --}}
+        <div class="mb-3">
+            <label for="harga_reguler" class="form-label">Harga Reguler</label>
+            <input type="number" step="0.01" class="form-control" id="harga_reguler" name="harga_reguler" value="{{ $menu->harga_reguler }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="harga_mini" class="form-label">Harga Mini</label>
+            <input type="number" step="0.01" class="form-control" id="harga_mini" name="harga_mini" value="{{ $menu->harga_mini }}" required>
         </div>
             <div class="mb-3">
             <label for="foto_menu" class="form-label">Foto Menu</label>
