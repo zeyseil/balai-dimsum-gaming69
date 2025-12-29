@@ -99,42 +99,86 @@
         transform: translateY(3px);
         box-shadow: 0px 3px 0px #B83D3D;
     }
+
+    /* Error Message */
+    .balai-error-message {
+        color: #DD4747;
+        font-weight: bold;
+        margin-bottom: 15px;
+        padding: 10px;
+        background: #FFE5E5;
+        border-radius: 8px;
+        display: none;
+    }
+
+    .balai-error-message.show {
+        display: block;
+    }
+
+    /* Success Message */
+    .balai-success-message {
+        color: #28a745;
+        font-weight: bold;
+        margin-bottom: 15px;
+        padding: 10px;
+        background: #E5F5E5;
+        border-radius: 8px;
+        display: none;
+    }
+
+    .balai-success-message.show {
+        display: block;
+    }
 </style>
 
 </head>
 
 <body>
 
-<h1 class="balai-login-title">Balai Dimsum Dasboard</h1>
+<h1 class="balai-login-title">Balai Dimsum Dashboard</h1>
 
 <div class="balai-login-wrapper">
 
     <div class="balai-panel-left">
 
-        <form method="POST" action="#">
+        @if ($errors->any())
+            <div class="balai-error-message show">
+                @foreach ($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="balai-error-message show">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if (session('success'))
+            <div class="balai-success-message show">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('login.store') }}">
+            @csrf
 
             <div class="balai-input-group">
-                <label class="balai-input-label">username</label>
-                <input type="text" name="username" class="balai-input-field" placeholder="Masukan Username">
+                <label class="balai-input-label">Username</label>
+                <input type="text" name="username" class="balai-input-field" placeholder="Masukan Username" value="{{ old('username') }}" required>
             </div>
 
             <div class="balai-input-group">
-                <label class="balai-input-label">password</label>
-                <input type="password" name="password" class="balai-input-field" placeholder="Masukan Password">
+                <label class="balai-input-label">Password</label>
+                <input type="password" name="password" class="balai-input-field" placeholder="Masukan Password" required>
             </div>
 
-            <button class="balai-submit-btn">MASUK</button>
+            <button type="submit" class="balai-submit-btn">MASUK</button>
         </form>
     </div>
 
     <div class="balai-panel-right">
         <div>
             <h2>Selamat Datang</h2>
-            <p>di Balai Dimsum dashboard<br>harap login terlebih dahulu</p>
-        </div>
-    </div>
-
-</div>
-
-</body>
-</html>
+            <p>di Balai Dimsum Dashboard<br>Harap login terlebih dahulu</p>
