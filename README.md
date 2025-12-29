@@ -1,7 +1,7 @@
 ## Cara konfigurasi
 
 > [!WAJIB]
-> **Konfigurasi:** clone repository, jalankan 'composer install', copy file .env.example menjadi .env, jangan lupa masukan perintah php artisan migrate untuk ngeintregasikan database, terakhir di .env nya konfigurasi disesuaikan seperti berikut:
+> **Konfigurasi:** clone repository, jalankan 'composer install' dan 'php artisan key:generate', copy file .env.example menjadi .env, jangan lupa masukan perintah php artisan migrate untuk ngeintegrasikan database, terakhir di .env nya konfigurasi disesuaikan seperti berikut:
 
 ``` 
 APP_NAME=balai_dimsum
