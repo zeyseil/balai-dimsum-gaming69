@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="style1.css">
     <style>
         <style>
-        
 .checkout-modal {
     
     position: fixed;
@@ -222,6 +221,10 @@
     background: #111;
     color: #fff;
     cursor: pointer;
+}
+
+        a {
+    text-decoration: none;
 }
     </style>
 
@@ -640,7 +643,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
 
         <!-- Content Cards -->
-         <div class="content-section">
+        <div class="content-section">
             <div class="cards-container">
                 <div class="card">
                     <div class="card-header">FOOD</div>
@@ -648,9 +651,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="card-text">
                         Nikmati kelezatan dimsum mentai kami yang dibuat dengan bahan-bahan segar dan berkualitas. Setiap gigitan memberikan sensasi rasa yang memanjakan lidah.
                     </div>
-                    <a href="/menu" class="card-button">
-                        <span>Pesan Sekarang</span>
-                    </a>
+                    <a href="/menu">
+                    <div class="card-button">
+                        <span >Pesan Sekarang</span>
+                    </div></a>
                 </div>
 
                 <div class="card">
@@ -660,10 +664,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         Kunjungi kami di BANDUNG TIMUR, Jl. Pasir Impun No. 28. Lokasi strategis dan mudah dijangkau untuk menikmati dimsum favorit Anda.
                     </div>
                     <a href="https://maps.app.goo.gl/uKkpyGTYmCJcB38RA"
-                        target="_blank"
-                        class="card-button">
+                        target="_blank">
+                       <div class="card-button">
                         <span>Baca Selengkapnya</span>
-                    </a>
+                    </div></a>
                 </div>
 
                 <div class="card">
@@ -672,9 +676,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="card-text">
                         Lihat berbagai foto produk dan momen spesial kami. Dari proses pembuatan hingga penyajian dimsum yang menggugah selera.
                     </div>
-                    <a href="/galeri" class="card-button">
+                    <a href="/galeri"><div class="card-button">
                         <span>Baca Selengkapnya</span>
-                    </a>
+                    </div></a>
                 </div>
             </div>
         </div>
