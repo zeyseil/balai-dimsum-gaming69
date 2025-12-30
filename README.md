@@ -11,3 +11,5 @@ DB_DATABASE=balai_dimsum
 ```
 
 setelah semua konfigurasi selesai dilakukan, silahkan membuka xampp atau laragon untuk menyalakan databasenya.
+
+**NOTE:** jika gambar tidak pada database tidak tampil jalankan perintah 'php artisan storage:link'.
