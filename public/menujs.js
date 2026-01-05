@@ -276,6 +276,7 @@ function keForm() {
     const orderListHtml = orders.map(order => `
         <div class="order-item-summary">
             ${order.nama_menu} (${order.type}) - ${order.quantity}x - Rp ${formatRupiah(order.subtotal)}
+            ${order.notes ? `<div style="font-size: 12px; color: #666; margin-top: 4px; font-style: italic;">📝 Catatan: ${order.notes}</div>` : ''}
         </div>
     `).join('');
     

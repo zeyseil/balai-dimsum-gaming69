@@ -28,6 +28,11 @@
                         <span>{{ $detail->menu->nama_menu }} ({{ $detail->jumlah_pesanan }}x)</span>
                         <span>Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</span>
                     </div>
+                    @if($detail->catatan)
+                        <div style="font-size: 13px; color: #e6e6e6; margin-left: 10px; margin-top: -1%; margin-bottom: 10px; font-style: italic;">
+                            Catatan: {{ $detail->catatan }}
+                        </div>
+                    @endif
                 @endforeach
                 <hr>
                 <div class="row total">
