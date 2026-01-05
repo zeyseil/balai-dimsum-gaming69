@@ -24,7 +24,7 @@
   </div>
 
   <label class="notes-label">Notes :</label>
-  <textarea class="notes-box" placeholder="Catatan tambahan."></textarea>
+  <textarea class="notes-box" id="pesanan-notes" placeholder="Catatan tambahan."></textarea>
 
   <div class="promo">
     <img src="img/dimsum2.png" class="promo-icon">

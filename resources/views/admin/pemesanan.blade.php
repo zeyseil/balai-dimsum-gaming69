@@ -51,10 +51,11 @@
                 <th class="bd-tabel__header" style="width: 25%;">No Telepon</th>
                 <th class="bd-tabel__header" style="width: 25%;">Catatan</th>
                 <th class="bd-tabel__header" style="width: 15%;">Menu</th>
+                <th class="bd-tabel__header" style="width: 20%;">Harga</th>
                 <th class="bd-tabel__header" style="width: 12%;">Status Pembayaran</th>
                 <th class="bd-tabel__header" style="width: 12%;">Status Pesanan</th>
                 <th class="bd-tabel__header" style="width: 15%;">Tanggal Pembelian</th>
-                <th class="bd-tabel__header" style="width: 11%;">Aksi</th>
+                <th class="bd-tabel__header" style="width: 20%;">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -70,6 +71,7 @@
                         {{ $menu_nama }} ({{ $jumlah }}x){{ !$loop->last ? ', ' : '' }}
                     @endforeach
                 </td>
+                <td class="bd-tabel__data">Rp {{ number_format($p['pesanan']->total_harga ?? 0, 0, ',', '.') }}</td>
                 <td class="bd-tabel__data">
                     @if($p['pesanan']->pembayaran)
                         <span class="bd-status {{ $p['pesanan']->pembayaran->status_pembayaran == 'dibayar' ? 'bd-status--selesai' : 'bd-status--diantar' }}">
@@ -110,8 +112,8 @@
                             </button>
                         </form>
                     @else
-                        <span style="padding: 6px 12px; background-color: #6c757d; color: white; border-radius: 4px; font-size: 12px;">
-                            Pesanan Selesai
+                        <span style="padding: 6px 10px; background-color: #6c757d; color: white; border-radius: 4px; font-size: 12px;">
+                            Selesai
                         </span>
                     @endif
                 </td>
