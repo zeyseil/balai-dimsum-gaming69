@@ -16,9 +16,7 @@ use App\Http\Controllers\PaymentController;
 Route::get('/', function () {
     return view('/home');
 });
-Route::get('/menu', function (): mixed {
-    return view('menu');
-});
+Route::get('/menu', [MenuController::class, 'menu'])->name('menu.index');
 
 Route::get('/saran', function () {
     return view('saran');
@@ -39,7 +37,7 @@ Route::get('/popup', function () {
 Route::get('/checkout', function () {
     return view('checkout');
 });
-Route::get('/checkout/{pelanggan_id}', [PaymentController::class, 'index']);
+Route::get('/checkout/{pesanan_id}', [PaymentController::class, 'index'])->name('checkout.show');
 
 Route::post('/pembayaran/store', [PaymentController::class, 'store'])
     ->name('pembayaran.store');
@@ -83,7 +81,5 @@ Route::middleware('admin')->group(function () {
 });
 
 // ===== PUBLIC ROUTES =====
-Route::get('/menu', [MenuController::class, 'menu']);
-
 //resourcee route crud saran
 Route::post('/saran', [SaranController::class, 'store'])->name('saran.store');

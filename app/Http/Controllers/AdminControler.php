@@ -116,7 +116,7 @@ class AdminControler extends Controller
         $pelanggan = Pelanggan::all();
         $pesanan = Pesanan::all();
         
-        $query = DetailPesanan::with('pesanan.pelanggan', 'pesanan.menu', 'pesanan.pembayaran');
+        $query = DetailPesanan::with('pesanan.pelanggan', 'menu', 'pesanan.pembayaran');
         
         // Search berdasarkan nama pelanggan, alamat, atau menu
         if ($request->filled('search')) {
@@ -140,7 +140,39 @@ class AdminControler extends Controller
         }
         
         // Urutkan dari pesanan terbaru ke terlama
-        $detail_pesanan = $query->orderBy('created_at', 'desc')->get();
+        $detail_pesanan_raw = $query->orderBy('created_at', 'desc')->get();
+        
+        // Group pesanan berdasarkan nama pelanggan dan alamat
+        $grouped_pesanan = [];
+        foreach ($detail_pesanan_raw as $detail) {
+            $nama_pelanggan = $detail->pesanan?->pelanggan?->nama ?? '-';
+            $alamat_pelanggan = $detail->pesanan?->pelanggan?->alamat ?? '-';
+            $no_telepon = $detail->pesanan?->pelanggan?->no_telepon ?? '-';
+            $catatan = $detail->catatan ?? '-';
+            $key = $nama_pelanggan . '|' . $alamat_pelanggan;
+            
+            if (!isset($grouped_pesanan[$key])) {
+                $grouped_pesanan[$key] = [
+                    'nama' => $nama_pelanggan,
+                    'alamat' => $alamat_pelanggan,
+                    'no_telepon' => $no_telepon,
+                    'catatan' => $catatan,
+                    'pesanan' => $detail->pesanan,
+                    'menus' => [],
+                ];
+            }
+            
+            $menu_nama = $detail->menu?->nama_menu ?? '-';
+            $jumlah = $detail->jumlah_pesanan ?? 1;
+            
+            if (isset($grouped_pesanan[$key]['menus'][$menu_nama])) {
+                $grouped_pesanan[$key]['menus'][$menu_nama] += $jumlah;
+            } else {
+                $grouped_pesanan[$key]['menus'][$menu_nama] = $jumlah;
+            }
+        }
+        
+        $detail_pesanan = array_values($grouped_pesanan);
         $searchQuery = $request->input('search') ?? '';
         $statusFilter = $request->input('status') ?? '';
         

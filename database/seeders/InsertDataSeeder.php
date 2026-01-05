@@ -25,7 +25,7 @@ class InsertDataSeeder extends Seeder
         // Insert Menu
         $menu = Menu::create([
             'nama_menu' => 'Dimsum Spesial',
-            'harga_menu' => 50000,
+            'harga_reguler' => 50000,
             'foto_menu' => 'dimsum.jpg',
             'kategori' => 'Makanan',
             'stock' => 100
@@ -34,7 +34,6 @@ class InsertDataSeeder extends Seeder
         // Insert Pesanan
         $pesanan = Pesanan::create([
             'pelanggan_id' => $pelanggan->id,
-            'menu_id' => $menu->id,
             'tanggal_pesanan' => now()->toDateString(),
             'total_harga' => 50000
         ]);

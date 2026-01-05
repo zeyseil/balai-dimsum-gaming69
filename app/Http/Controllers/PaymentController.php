@@ -35,25 +35,42 @@ class PaymentController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'pesanan_id' => 'required',
-            'bukti_pembayaran' => 'required|image|mimes:jpg,jpeg,png|max:2048'
-        ]);
+        try {
+            $request->validate([
+                'pesanan_id' => 'required|integer|exists:pesanan,id',
+                'bukti_pembayaran' => 'required|image|mimes:jpg,jpeg,png|max:2048'
+            ]);
 
-        $file = $request->file('bukti_pembayaran');
-        $filename = time() . '.' . $file->extension();
-        
-        // Simpan langsung ke public folder agar bisa diakses
-        $file->move(public_path('bukti'), $filename);
+            $file = $request->file('bukti_pembayaran');
+            $filename = time() . '.' . $file->extension();
+            
+            // Buat folder jika belum ada
+            if (!file_exists(public_path('bukti'))) {
+                mkdir(public_path('bukti'), 0755, true);
+            }
+            
+            // Simpan langsung ke public folder agar bisa diakses
+            $file->move(public_path('bukti'), $filename);
 
-        Pembayaran::create([
-            'pesanan_id' => $request->pesanan_id,
-            'bukti_pembayaran' => $filename,
-            'status_pembayaran' => 'pending',
-            'tanggal_pembayaran' => Carbon::now()
-        ]);
+            Pembayaran::create([
+                'pesanan_id' => $request->pesanan_id,
+                'bukti_pembayaran' => $filename,
+                'status_pembayaran' => 'pending',
+                'tanggal_pembayaran' => Carbon::now()
+            ]);
 
-return redirect('/menu')
-    ->with('pesanan_dikirim', true);
+            return redirect('/menu')
+                ->with('pesanan_dikirim', true)
+                ->with('success', 'Pembayaran berhasil dikirim! Mohon tunggu konfirmasi admin.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('error', 'Validasi gagal. Pastikan file adalah gambar dengan format JPG/PNG dan ukuran maksimal 2MB');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
+                ->withInput();
+        }
     }
 }

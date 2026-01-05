@@ -61,9 +61,9 @@
                     <div class="menu-grid" id="menu-grid"> 
                         @foreach ($menu as $item)
                         <div class="menu-item" style="box-sizing: border-box;">
-                            <div class="menu-image"><img src="{{  asset(path:'storage/' . $item-> foto_menu) }}"></div>
+                            <div class="menu-image"><img src="{{ asset($item->foto_menu) }}"></div>
                             <div class="menu-name">{{ $item->nama_menu }}</div>
-                            <button class="menu-btn" onclick="tampilkanDialog('{{ $item->id }}', '{{ $item->nama_menu }}', '{{ asset(path:'storage/' . $item-> foto_menu) }}', '{{ $item->harga_reguler ?? 0 }}', '{{ $item->harga_mini ?? 0}}')">Tambahkan</button> 
+                            <button class="menu-btn" onclick="tampilkanDialog('{{ $item->id }}', '{{ $item->nama_menu }}', '{{ asset($item->foto_menu) }}', '{{ $item->harga_reguler ?? 0 }}', '{{ $item->harga_mini ?? 0}}')">Tambahkan</button> 
                         </div>  @endforeach   
                     </div>
                 </div>

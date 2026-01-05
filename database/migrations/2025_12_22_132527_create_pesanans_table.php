@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('pesanan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pelanggan_id')->constrained('pelanggan')->onDelete('cascade');
-            $table->foreignid('menu_id')->constrained('menu')->onDelete('cascade');
             $table->date(('tanggal_pesanan'));
             $table->decimal('total_harga',10,2);
             $table->string('status_pesanan',50)->default('pending');

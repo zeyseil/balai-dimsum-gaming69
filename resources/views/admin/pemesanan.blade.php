@@ -48,6 +48,8 @@
             <tr>
                 <th class="bd-tabel__header" style="width: 15%;">Nama</th>
                 <th class="bd-tabel__header" style="width: 20%;">Alamat</th>
+                <th class="bd-tabel__header" style="width: 25%;">No Telepon</th>
+                <th class="bd-tabel__header" style="width: 25%;">Catatan</th>
                 <th class="bd-tabel__header" style="width: 15%;">Menu</th>
                 <th class="bd-tabel__header" style="width: 12%;">Status Pembayaran</th>
                 <th class="bd-tabel__header" style="width: 12%;">Status Pesanan</th>
@@ -57,22 +59,24 @@
         </thead>
         <tbody>
             @forelse($detail_pesanan as $p)
-            @if($p->pesanan)
+            @if(isset($p['pesanan']) && $p['pesanan'])
             <tr class="bd-tabel__baris">
-                <td class="bd-tabel__data">{{ $p->pesanan->pelanggan->nama }}</td>
-                <td class="bd-tabel__data">{{ $p->pesanan->pelanggan->alamat }}</td>
+                <td class="bd-tabel__data">{{ $p['nama'] ?? '-' }}</td>
+                <td class="bd-tabel__data">{{ $p['alamat'] ?? '-' }}</td>
+                <td class="bd-tabel__data">{{ $p['no_telepon'] ?? '-' }}</td>
+                <td class="bd-tabel__data">{{ $p['catatan'] ?? '-' }}</td>  
                 <td class="bd-tabel__data">
-                    @foreach($p->pesanan->detailPesanan as $detail)
-                        <div>{{ $detail->menu->nama_menu }} ({{ $detail->jumlah_pesanan }}x)</div>
+                    @foreach($p['menus'] as $menu_nama => $jumlah)
+                        {{ $menu_nama }} ({{ $jumlah }}x){{ !$loop->last ? ', ' : '' }}
                     @endforeach
                 </td>
                 <td class="bd-tabel__data">
-                    @if($p->pesanan->pembayaran)
-                        <span class="bd-status {{ $p->pesanan->pembayaran->status_pembayaran == 'dibayar' ? 'bd-status--selesai' : 'bd-status--diantar' }}">
-                            {{ ucfirst($p->pesanan->pembayaran->status_pembayaran) }}
+                    @if($p['pesanan']->pembayaran)
+                        <span class="bd-status {{ $p['pesanan']->pembayaran->status_pembayaran == 'dibayar' ? 'bd-status--selesai' : 'bd-status--diantar' }}">
+                            {{ ucfirst($p['pesanan']->pembayaran->status_pembayaran) }}
                         </span>
-                        @if($p->pesanan->pembayaran->bukti_pembayaran)
-                        <button onclick="showBuktiModal('{{ asset('bukti/' . $p->pesanan->pembayaran->bukti_pembayaran) }}', '{{ $p->pesanan->pembayaran->id }}')" style="margin-left: 5px; padding: 4px 8px; background-color: #0066cc; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 11px;">
+                        @if($p['pesanan']->pembayaran->bukti_pembayaran)
+                        <button onclick="showBuktiModal('{{ asset('bukti/' . $p['pesanan']->pembayaran->bukti_pembayaran) }}', '{{ $p['pesanan']->pembayaran->id }}')" style="margin-left: 5px; padding: 4px 8px; background-color: #0066cc; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 11px;">
                              Lihat
                         </button>
                         @endif
@@ -83,24 +87,24 @@
                     @endif
                 </td>
                 <td class="bd-tabel__data">
-                    <span class="bd-status {{ $p->pesanan->status_pesanan == 'pending' ? 'bd-status--pending' : ($p->pesanan->status_pesanan == 'selesai' ? 'bd-status--selesai' : 'bd-status--diantar') }}">
-                        {{ ucfirst(str_replace('_', ' ', $p->pesanan->status_pesanan)) }}
+                    <span class="bd-status {{ $p['pesanan']->status_pesanan == 'pending' ? 'bd-status--pending' : ($p['pesanan']->status_pesanan == 'selesai' ? 'bd-status--selesai' : 'bd-status--diantar') }}">
+                        {{ ucfirst(str_replace('_', ' ', $p['pesanan']->status_pesanan)) }}
                     </span>
                 </td>
-                <td class="bd-tabel__data">{{ $p->pesanan->created_at->format('d/m/Y H:i') }}</td>
+                <td class="bd-tabel__data">{{ $p['pesanan']->created_at->format('d/m/Y H:i') }}</td>
                 <td class="bd-tabel__data">
-                    @if($p->pesanan->status_pesanan !== 'selesai')
-                        <form action="{{ route('pesanan.updateStatus', $p->pesanan->id) }}" method="POST" style="display: inline;">
+                    @if($p['pesanan']->status_pesanan !== 'selesai')
+                        <form action="{{ route('pesanan.updateStatus', $p['pesanan']->id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('PATCH')
                             <button type="submit" class="btn-aksi" style="padding: 6px 12px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">
-                                @if($p->pesanan->status_pesanan == 'pending')
+                                @if($p['pesanan']->status_pesanan == 'pending')
                                     Konfirmasi
-                                @elseif($p->pesanan->status_pesanan == 'dikonfirmasi')
+                                @elseif($p['pesanan']->status_pesanan == 'dikonfirmasi')
                                     Kirim
-                                @elseif($p->pesanan->status_pesanan == 'diantar')
+                                @elseif($p['pesanan']->status_pesanan == 'diantar')
                                     Sampai
-                                @elseif($p->pesanan->status_pesanan == 'sampai_tujuan')
+                                @elseif($p['pesanan']->status_pesanan == 'sampai_tujuan')
                                     Selesai
                                 @endif
                             </button>

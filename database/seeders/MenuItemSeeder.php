@@ -16,8 +16,7 @@ class MenuItemSeeder extends Seeder
     {
         Menu::create([
             'nama_menu' => 'Nori',
-            'foto_menu' => './img/Dimsumdisplay6.png',
-            'harga_menu' => 10000,
+            'foto_menu' => 'img/Dimsumdisplay6.png',
             'harga_reguler' => 15000,
             'harga_mini' => 12000,
             'kategori' => 'reguler',

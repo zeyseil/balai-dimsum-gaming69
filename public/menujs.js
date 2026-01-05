@@ -258,6 +258,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function keForm() {
     const orders = ambilSemuaPesanan();
     
+    console.log('keForm called, orders:', orders);
+    
     // Validasi: cek apakah ada pesanan
     if (orders.length === 0) {
         alert('Belum ada pesanan yang ditambahkan!');
@@ -267,6 +269,8 @@ function keForm() {
     // Ambil total harga
     const totalHargaText = document.getElementById('total-harga').textContent;
     const totalHarga = parseInt(totalHargaText.replace(/[^0-9]/g, ''));
+    
+    console.log('Total harga:', totalHarga);
     
     // Tampilkan ringkasan pesanan di modal
     const orderListHtml = orders.map(order => `
@@ -282,8 +286,12 @@ function keForm() {
     document.getElementById('orders-data').value = JSON.stringify(orders);
     document.getElementById('total-harga-input').value = totalHarga;
     
+    console.log('Orders data set:', JSON.stringify(orders));
+    
     // Buka modal
-    document.getElementById('checkout-modal').showModal();
+    const modal = document.getElementById('checkout-modal');
+    console.log('Opening modal:', modal);
+    modal.showModal();
 }
 
 // Fungsi untuk menutup modal checkout
@@ -294,6 +302,7 @@ function tutupCheckout() {
 
 // Handle form submit
 document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    console.log('Form submit triggered');
     const submitBtn = document.getElementById('submit-checkout');
     submitBtn.disabled = true;
     submitBtn.textContent = 'Memproses...';
@@ -317,4 +326,9 @@ document.getElementById('checkout-modal').addEventListener('click', function(eve
 function closePopupPembayaran() {
     const popup = document.getElementById('popup-pembayaran');
     if (popup) popup.style.display = 'none';
+}
+
+// Alias untuk updateTotalHarga
+function hitungTotalPesanan() {
+    updateTotalHarga();
 }

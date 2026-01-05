@@ -42,7 +42,15 @@ class PesananController extends Controller
                 'no_telepon' => $request->no_telepon,
             ]);
 
-            // Loop setiap order untuk menyimpan pesanan dan detail pesanan
+            // Buat satu pesanan untuk semua items
+            $pesanan = Pesanan::create([
+                'pelanggan_id' => $pelanggan->id,
+                'tanggal_pesanan' => now(),
+                'total_harga' => $request->total_harga,
+                'status_pesanan' => 'pending',
+            ]);
+
+            // Loop setiap order untuk menyimpan detail pesanan
             foreach ($orders as $order) {
                 // Validasi setiap item order
                 if (!isset($order['item_id']) || !isset($order['quantity']) || !isset($order['subtotal'])) {
@@ -66,15 +74,6 @@ class PesananController extends Controller
                     ]);
                     throw new \Exception("Stock menu '{$menu->nama_menu}' tidak cukup. Tersedia: {$menu->stock}, Diminta: {$order['quantity']}");
                 }
-                
-                // Simpan data pesanan
-                $pesanan = Pesanan::create([
-                    'pelanggan_id' => $pelanggan->id,
-                    'menu_id' => $order['item_id'],
-                    'tanggal_pesanan' => now(),
-                    'total_harga' => $order['subtotal'], // total per item
-                    'status_pesanan' => 'pending',
-                ]);
 
                 // Simpan detail pesanan
                 DetailPesanan::create([
