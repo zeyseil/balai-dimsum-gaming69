@@ -57,7 +57,7 @@
 
             <label class="payment-option">
                 <input type="radio" name="payment_method" value="ewallet">
-                GoPay / DANA
+                QRIS
             </label>
         </div>
 
@@ -86,6 +86,41 @@
 
     </form>
 </div>
+<!-- Modal QRIS -->
+<div id="qrisModal" class="modal-qris">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeQris()">&times;</span>
+        <h2>Scan QRIS untuk Pembayaran</h2>
+        <img src="{{ asset('img/qris.png') }}" alt="QRIS Balai Dimsum" class="qris-img">
+        <p>Silakan scan QRIS di atas sesuai total pembayaran.</p>
+    </div>
+</div>
+<script>
+    const qrisRadio = document.querySelector('input[value="ewallet"]');
+    const bcaRadio = document.querySelector('input[value="bca"]');
+    const qrisModal = document.getElementById('qrisModal');
+
+    qrisRadio.addEventListener('change', function () {
+        if (this.checked) {
+            qrisModal.style.display = 'flex';
+        }
+    });
+
+    bcaRadio.addEventListener('change', function () {
+        closeQris();
+    });
+
+    function closeQris() {
+        qrisModal.style.display = 'none';
+    }
+
+    // Tutup modal jika klik area gelap
+    window.addEventListener('click', function(e) {
+        if (e.target === qrisModal) {
+            closeQris();
+        }
+    });
+</script>
 
 </body>
 </html>
